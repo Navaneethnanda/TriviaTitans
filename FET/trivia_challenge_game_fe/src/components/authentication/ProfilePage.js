@@ -1,5 +1,5 @@
 import { useState,useEffect } from "react";
-import dogo from '../Assets/dogo.avif'
+import dogo from '../../Assets/dogo.avif'
 import { useNavigate } from 'react-router-dom';
 import {  signOut,onAuthStateChanged } from "firebase/auth";
 import { HeartIcon } from '@heroicons/react/24/solid';

@@ -14,6 +14,11 @@ import ProfilePage from './components/authentication/ProfilePage';
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from './firebase';
 import SecurityQuestion from './components/authentication/SecurityQuestion';
+import AdminHome from './components/Admin/AdminHome';
+import GameCreation from './components/Admin/GameCreation';
+import QuestionCreation from './components/Admin/QuestionCreation';
+import Question from './components/Admin/Questions';
+import EditQuestion from './components/Admin/EditQuestion';
 
 function App() {
   const [currentUser,setCurrentUser]=useState("");
@@ -58,6 +63,14 @@ function App() {
           <Route path='/SQ' element={<SecurityQuestion />} />
         
       
+          {/*Admin Routes */}
+          <Route path='/admin' element={<AdminHome />} />
+          <Route path='/creategame' element={<GameCreation />} />
+          <Route path='/questions' element={<Question />} />
+          <Route path='/createquestion' element={<QuestionCreation />} />
+          <Route path='/editquestions' element={<EditQuestion />} />
+
+          
           </Routes>
       </Router>
 
