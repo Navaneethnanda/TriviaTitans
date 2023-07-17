@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, Link, useLocation } from 'react-router-dom';
 import axios from "axios";
 import { v4 as uuidv4 } from 'uuid';
@@ -20,14 +20,9 @@ export default function QuestionCreation() {
   const [hint, setHint] = useState();
   const [questioncategory, setQuestionCategory] = useState();
   const [questiondifficultylevel, setQuestionDifficultyLevel] = useState();
+  const [categories, setCategories] = useState([]);
 
-  const categories = [
-    "Arts and Culture",
-    "History",
-    "Modern Technology",
-    "Movies, Books & TV-Shows",
-    "Sport"
-  ];
+
 
   const difficultylevel = [
     "Easy",
@@ -47,13 +42,20 @@ export default function QuestionCreation() {
     console.log(selectedDifficulty);
     setQuestionDifficultyLevel(selectedDifficulty);
   };
-//   useEffect(()=>{
-//     onAuthStateChanged(auth, (user) => {
-//         if (user) {
-//           navigate("/profile");
-//         } 
-//       });
-// },[]);
+
+  useEffect(()=>{
+  const fetchData = async () => {
+    try {
+        const response = await axios.get('https://907fx2wvif.execute-api.us-east-1.amazonaws.com/Dev/categories');
+        console.log(response.data.value);
+        setCategories(response.data.value);
+    } catch (error) {
+        console.error('Error fetching data:', error);
+    }
+    };
+
+  fetchData();
+ },[]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -100,6 +102,11 @@ export default function QuestionCreation() {
   };
 
   return (
+    <>  
+    {categories?.length === 0 ? (
+    <p>Loading...</p>
+  ) : (
+    <> 
     <div className="flex items-center justify-center ">
 
       <div className="bg-white w-full sm:w-[480px] margin top mt-6 p-8 rounded-md shadow-sm border-[1px]">
@@ -145,8 +152,8 @@ export default function QuestionCreation() {
           >
             <option value="">Select Category</option>
             {categories.map((option, index) => (
-                <option key={index} value={option}>
-                  {option}
+                <option key={index} value={option.Category}>
+                  {option.Category}
                 </option>
               ))}
           </select>     
@@ -175,5 +182,8 @@ export default function QuestionCreation() {
         </form>
       </div>
     </div>
+    </>
+    )}
+   </>
   );
 }

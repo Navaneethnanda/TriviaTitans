@@ -8,10 +8,10 @@ export default function Question() {
 
     const navigate = useNavigate();
     const location = useLocation();
-    const gameId = location.state;
-    console.log("-------------")
+    const { object } = location.state;
+    const gameId = object.id;
 
-    console.log(gameId);
+    console.log("-------------")
 
     useEffect(() => {
         const fetchData = async () => {
@@ -29,24 +29,17 @@ export default function Question() {
 
     fetchData();
   }, []);
-
-    const [items, setItems] = useState([
-        { id: 1, name: 'Item 1', price: 10 },
-        { id: 2, name: 'Item 2', price: 20 },
-        { id: 3, name: 'Item 3', price: 30 },
-      ]);
     
+      const handleBack = () => {
+        // Logic for handling edit action
+        navigate("/admin");
+      };
+
       const handleDelete = async (id) => {
         console.log(id);
         const dataVal={
             "deleteId": id,
             }
-        const requestPayload = {
-            method: 'POST',
-            body: JSON.stringify(dataVal) // Convert the data object to a JSON string
-          };
-
-          console.log(requestPayload);
     
         const response =  await axios.post('https://907fx2wvif.execute-api.us-east-1.amazonaws.com/Dev/deletequestion', dataVal);
         console.log(response.data);
@@ -82,11 +75,15 @@ export default function Question() {
         <>  
         <div className="flex items-center justify-center ">
         <div className="bg-white w-full sm:w-[45%] margin top mt-3 p-3 rounded-md shadow-sm border-[1px]">
-        <div className="font-bold text-3xl mb-4  mx-auto text-center" style={{color: 'green' }}>{gameId}</div>
+        <div className="font-bold text-3xl mb-4  mx-auto text-center" style={{color: 'green' }}>{object.name}</div>
         </div>
         </div>
         {/* <div className="font-bold text-3xl mb-4  mx-auto text-center" >Create <Link to={{ pathname : "/createquestion", state: { gameID } }} className="text-blue-800 underline">Question</Link></div> */}
-        <button style={{ color: "red" }} onClick={() => handleRedirect()}>Create Question</button>
+        <div className="flex items-center justify-center ">
+        <div className="bg-white w-full sm:w-[480px] mx-auto text-center margin top mt-3 p-4 rounded-md shadow-sm border-[1px]">
+            <button className="font-bold text-3xl mb-4  mx-auto text-center" style={{ color: "blue" }} onClick={() => handleRedirect()}>Create Question</button>
+        </div>
+        </div>
         <div className="flex items-center justify-center ">
         <div className="bg-white w-full sm:w-[100%] margin top mt-6 p-8 rounded-md shadow-sm border-[1px]">
         <table style={{ width: '100%' }}>
@@ -118,6 +115,11 @@ export default function Question() {
         </table>
         </div>
         </div>
+        <div className="flex items-center justify-center ">
+        <div className="bg-white w-full sm:w-[480px] mx-auto text-center margin top mt-3 p-4 rounded-md shadow-sm border-[1px]">
+            <button className="font-bold text-3xl mb-4  mx-auto text-center" style={{ color: "black" }} onClick={() => handleBack()}>Back</button>
+        </div>
+    </div>
         </>
         )}
         </>

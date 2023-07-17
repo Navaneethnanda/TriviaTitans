@@ -19,6 +19,8 @@ import GameCreation from './components/Admin/GameCreation';
 import QuestionCreation from './components/Admin/QuestionCreation';
 import Question from './components/Admin/Questions';
 import EditQuestion from './components/Admin/EditQuestion';
+import Categories from './components/Admin/Categories';
+import CreateCategory from './components/Admin/CreateCategory';
 
 function App() {
   const [currentUser,setCurrentUser]=useState("");
@@ -69,7 +71,10 @@ function App() {
           <Route path='/questions' element={<Question />} />
           <Route path='/createquestion' element={<QuestionCreation />} />
           <Route path='/editquestions' element={<EditQuestion />} />
+          <Route path='/categories' element={<Categories />} />
+          <Route path='/createcategory' element={<CreateCategory />} />
 
+          
           
           </Routes>
       </Router>

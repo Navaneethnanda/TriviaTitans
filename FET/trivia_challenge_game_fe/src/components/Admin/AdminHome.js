@@ -13,6 +13,8 @@ export default function AdminHome() {
             const response = await axios.get('https://907fx2wvif.execute-api.us-east-1.amazonaws.com/Dev/games');
             console.log(response.data.value);
             setAllGames(response.data.value);
+            console.log("----------");
+            console.log(allgames);
             setData(allgames);
         } catch (error) {
             console.error('Error fetching data:', error);
@@ -24,18 +26,16 @@ export default function AdminHome() {
 
     const navigate = useNavigate();
     console.log("-------------")
-
-
-    const [items, setItems] = useState([
-        { id: 1, name: 'Item 1', price: 10 },
-        { id: 2, name: 'Item 2', price: 20 },
-        { id: 3, name: 'Item 3', price: 30 },
-      ]);
     
-      const handleView= (id) => {
-        // Logic for handling edit action
-        console.log(`view game with ID: ${id}`);
-        navigate("/questions", {state: id});
+      const handleView= (item) => {
+
+        const dataVal = {
+          id: item.Id,
+          name: item.GameName,
+          };
+
+        console.log(`view game with ID: ${item.Id}`);
+        navigate("/questions", { state: { object: dataVal } });
       };
 
     return (
@@ -48,6 +48,12 @@ export default function AdminHome() {
         <div className="flex items-center justify-center ">
         <div className="bg-white w-full sm:w-[640px] margin top mt-6 p-8 rounded-md shadow-sm border-[1px]">
             <div className="font-bold text-3xl mb-4  mx-auto text-center" >Create  <Link to="/creategame" className="text-blue-800 underline">Game</Link></div>
+            {/* <div className="font-bold text-3xl mb-4  mx-auto text-center" >Create  <Link to="/createquestion" className="text-blue-800 underline">Question</Link></div> */}
+        </div>
+        </div>
+        <div className="flex items-center justify-center ">
+        <div className="bg-white w-full sm:w-[640px] margin top mt-6 p-8 rounded-md shadow-sm border-[1px]">
+            <div className="font-bold text-3xl mb-4  mx-auto text-center" ><Link to="/categories" className="text-blue-800 underline">Category</Link></div>
             {/* <div className="font-bold text-3xl mb-4  mx-auto text-center" >Create  <Link to="/createquestion" className="text-blue-800 underline">Question</Link></div> */}
         </div>
         </div>
@@ -73,7 +79,7 @@ export default function AdminHome() {
                 <td style={{ textAlign: 'center', width: '15%', color: "blue" }}>{item.Difficulty}</td>
                 <td style={{ textAlign: 'center', width: '15%', color: "blue" }}>{item.StartTime}</td>
                 <td style={{ textAlign: 'center', width: '10%'}}>
-                <button style={{ color: "green" }} onClick={() => handleView(item.Id)}>View</button>
+                <button style={{ color: "green" }} onClick={() => handleView(item)}>View</button>
                 </td>
               </tr>
             ))}

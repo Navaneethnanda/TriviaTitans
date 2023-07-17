@@ -16,14 +16,8 @@ export default function GameCreation() {
   const [gamecategory, setGameCategory] = useState();
   const [gamedifficultylevel, setGameDifficultyLevel] = useState();
   const [gamestarttime, setGameStartTime] = useState(new Date());
+  const [categories, setCategories] = useState([]);
 
-  const categories = [
-    "Arts and Culture",
-    "History",
-    "Modern Technology",
-    "Movies, Books & TV-Shows",
-    "Sport"
-  ];
 
   const difficultylevel = [
     "Easy",
@@ -42,13 +36,25 @@ export default function GameCreation() {
     console.log(selectedDifficulty);
     setGameDifficultyLevel(selectedDifficulty);
   };
-//   useEffect(()=>{
-//     onAuthStateChanged(auth, (user) => {
-//         if (user) {
-//           navigate("/profile");
-//         } 
-//       });
-// },[]);
+
+   useEffect(()=>{
+  const fetchData = async () => {
+        try {
+            const response = await axios.get('https://907fx2wvif.execute-api.us-east-1.amazonaws.com/Dev/categories');
+            console.log(response.data.value);
+            setCategories(response.data.value);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+        };
+
+    fetchData();
+},[]);
+
+const handleBack = () => {
+  // Logic for handling edit action
+  navigate("/admin");
+};
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -89,6 +95,11 @@ export default function GameCreation() {
   };
 
   return (
+    <>  
+        {categories?.length === 0 ? (
+        <p>Loading...</p>
+      ) : (
+        <>  
     <div className="flex items-center justify-center ">
 
       <div className="bg-white w-full sm:w-[480px] margin top mt-6 p-8 rounded-md shadow-sm border-[1px]">
@@ -109,8 +120,8 @@ export default function GameCreation() {
           >
             <option value="">Select Category</option>
             {categories.map((option, index) => (
-                <option key={index} value={option}>
-                  {option}
+                <option key={index} value={option.Category}>
+                  {option.Category}
                 </option>
               ))}
           </select>     
@@ -146,5 +157,13 @@ export default function GameCreation() {
         </form>
       </div>
     </div>
+    <div className="flex items-center justify-center ">
+        <div className="bg-white w-full sm:w-[480px] mx-auto text-center margin top mt-3 p-4 rounded-md shadow-sm border-[1px]">
+            <button className="font-bold text-3xl mb-4  mx-auto text-center" style={{ color: "green" }} onClick={() => handleBack()}>Back</button>
+        </div>
+        </div>
+    </>
+    )}
+   </>
   );
 }
