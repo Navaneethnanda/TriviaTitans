@@ -1,8 +1,12 @@
+
+
 {
   picture:
-  name
-  phone
-  email
-  adress
-
+  name :text
+  phone:number
+  email:email
+  adress:
+  games played:0
+  win/loss ratio:0
+  total points earned:0
 }

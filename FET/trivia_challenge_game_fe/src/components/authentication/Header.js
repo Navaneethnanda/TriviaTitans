@@ -10,7 +10,7 @@ export default function Header() {
 
 
         <Link to="/">
-          <h1 className='text-3xl text-white font-bold flex-1 font-serif cursor-pointer'> NewsTub</h1></Link>
+          <h1 className='text-3xl text-white font-bold flex-1 font-serif cursor-pointer'> Trivia</h1></Link>
 
         <div className=' space-x-5 hidden sm:flex'>
           <HomeIcon className='w-7 text-white' />
