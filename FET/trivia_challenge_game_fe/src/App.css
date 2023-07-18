@@ -66,3 +66,95 @@ li {
 .nav-links li a.active {
   background-color: #4caf50;
 }
+* {
+  padding: 0px;
+  box-sizing: border-box;
+}
+
+.container {
+  margin-top: 20px;
+}
+
+.filters {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.filter-item {
+  margin-right: 10px;
+}
+
+.filter-item label {
+  font-weight: bold;
+}
+
+.games-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.game {
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.game h2 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.game p {
+  margin-bottom: 8px;
+}
+
+.game button {
+  background-color: teal;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.game button:hover {
+  background-color: darkcyan;
+}
+
+/* Additional styles for GameDetailsPage */
+.container {
+  margin-top: 20px;
+}
+
+.game-details {
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.game-details h2 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.game-details p {
+  margin-bottom: 8px;
+}
+
+.game-details button {
+  background-color: teal;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.game-details button:hover {
+  background-color: darkcyan;
+}

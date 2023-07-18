@@ -24,6 +24,7 @@ import EditQuestion from './components/Admin/EditQuestion';
 import Categories from './components/Admin/Categories';
 import CreateCategory from './components/Admin/CreateCategory';
 import GameLobby from './components/Lobby/GameLobby';
+import GameDetailsPage from './components/Lobby/GameDetailsPage';
 
 function App() {
   const [currentUser,setCurrentUser]=useState("");
@@ -78,6 +79,7 @@ function App() {
           <Route path='/createcategory' element={<CreateCategory />} />
 
           <Route path='/lobby' element={<GameLobby />} />
+          <Route path='/gameDetails' element={<GameDetailsPage />} />
           
           
           </Routes>
