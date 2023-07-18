@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate, Link } from 'react-router-dom';
-import { auth} from '../../firebase';
-import {  createUserWithEmailAndPassword,updateProfile,setPersistence,browserLocalPersistence} from "firebase/auth";
+import { auth } from '../../firebase';
+import { createUserWithEmailAndPassword, updateProfile, setPersistence, browserLocalPersistence } from "firebase/auth";
 import axios from "axios";
 
 
@@ -50,15 +50,16 @@ export default function Regestration() {
 
   const setData = async () => {
     try {
-      const data={"username":email,
-      "securityQuestion1":question1,
-      "securityQuestion2":question2,
-      "securityQuestion3":question3,
-      "answer1": answer1,
-      "answer2": answer2,
-      "answer3": answer3
-    }
-      const response = await axios.post('https://r66ypo4nf8.execute-api.us-east-1.amazonaws.com/test/setsq',data);
+      const data = {
+        "username": email,
+        "securityQuestion1": question1,
+        "securityQuestion2": question2,
+        "securityQuestion3": question3,
+        "answer1": answer1,
+        "answer2": answer2,
+        "answer3": answer3
+      }
+      const response = await axios.post('https://r66ypo4nf8.execute-api.us-east-1.amazonaws.com/test/setsq', data);
       console.log(response);
 
 
@@ -75,6 +76,12 @@ export default function Regestration() {
   const [email, setEmail] = useState('nanda@gmail.com');
   const [password, setPassword] = useState('Nanda@123');
   const [confirmPassword, setConfirmPassword] = useState('Nanda@123');
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [address, setAddress] = useState("");
+  const [profilePicture, setProfilePicture] = useState(""); // File or URL
+  const [gamesPlayed, setGamesPlayed] = useState("");
+  const [totalWins, setTotalWins] = useState("");
+  const [points, setPoints] = useState("");
 
 
   const navigate = useNavigate();
@@ -157,28 +164,47 @@ export default function Regestration() {
       return;
     }
 
-    
 
-    setPersistence(auth,browserLocalPersistence) .then(async ()=>
-    {
+
+    setPersistence(auth, browserLocalPersistence).then(async () => {
 
       await setData();
 
 
-      const { user } = await createUserWithEmailAndPassword(auth,email, password);
+      const { user } = await createUserWithEmailAndPassword(auth, email, password);
 
-      const displayName=firstName+" "+lastName;
+      const displayName = firstName + " " + lastName;
       await updateProfile(auth.currentUser, { displayName: displayName }).catch(
         (err) => console.log(err)
       );
+      const userData = {
+        name:firstName+" "+lastName,
+        email:email,
+        phoneNumber:"",
+        address:"",
+        profilePicture:"",
+        gamesPlayed:0,
+        totalWins:0,
+        points:0
+      };
+
+      saveUserData(userData);
+
       navigate('/profile');
 
     });
 
-    
-
   };
-
+  const saveUserData = (userData) => {
+    axios
+      .post('https://1on3r7usi4.execute-api.us-east-1.amazonaws.com/updateUserDetails/updateuserdetails', userData)
+      .then((response) => {
+        console.log("Data saved successfully:", response.data);
+      })
+      .catch((error) => {
+        console.log("Error saving data:", error);
+      });
+  };
   return (
     <div className="flex items-center justify-center">
 
@@ -232,75 +258,75 @@ export default function Regestration() {
 
 
           <div className="container mx-auto mt-8">
-      <h2 className="text-lg font-bold mb-4">Security Questions</h2>
+            <h2 className="text-lg font-bold mb-4">Security Questions</h2>
 
-      <div className="flex flex-col space-y-4">
-        <label htmlFor="question1" className="font-medium">
-          Question 1 <span className="text-red-600">*</span>
-        </label>
-        <select
-          id="question1"
-          value={question1}
-          onChange={handleQuestion1Change}
-          className="w-full border-gray-200 border-[1px] rounded-sm shadow-sm p-1"
-        >
-          <option value="">Select a question</option>
-          {questionOptions
-            .filter((option) => option !== question2 && option !== question3)
-            .map((option, index) => (
-              <option key={index} value={option}>
-                {option}
-              </option>
-            ))}
-        </select>
-        <input className="w-full border-gray-200 border-[1px] rounded-sm shadow-sm p-1" type="email" value={answer1} onChange={(e) => setAnswer1(e.target.value)} placeholder="Anwer" required />
-      </div>
+            <div className="flex flex-col space-y-4">
+              <label htmlFor="question1" className="font-medium">
+                Question 1 <span className="text-red-600">*</span>
+              </label>
+              <select
+                id="question1"
+                value={question1}
+                onChange={handleQuestion1Change}
+                className="w-full border-gray-200 border-[1px] rounded-sm shadow-sm p-1"
+              >
+                <option value="">Select a question</option>
+                {questionOptions
+                  .filter((option) => option !== question2 && option !== question3)
+                  .map((option, index) => (
+                    <option key={index} value={option}>
+                      {option}
+                    </option>
+                  ))}
+              </select>
+              <input className="w-full border-gray-200 border-[1px] rounded-sm shadow-sm p-1" type="email" value={answer1} onChange={(e) => setAnswer1(e.target.value)} placeholder="Anwer" required />
+            </div>
 
-      <div className="flex flex-col space-y-4 mt-4">
-        <label htmlFor="question2" className="font-medium">
-          Question 2 <span className="text-red-600">*</span>
-        </label>
-        <select
-          id="question2"
-          value={question2}
-          onChange={handleQuestion2Change}
-          className="w-full border-gray-200 border-[1px] rounded-sm shadow-sm p-1"
-        >
-          <option value="">Select a question</option>
-          {questionOptions
-            .filter((option) => option !== question1 && option !== question3)
-            .map((option, index) => (
-              <option key={index} value={option}>
-                {option}
-              </option>
-            ))}
-        </select>
-            <input className="w-full border-gray-200 border-[1px] rounded-sm shadow-sm p-1" type="email" value={answer2} onChange={(e) => setAnswer2(e.target.value)} placeholder="Anwer" required />
-      </div>
+            <div className="flex flex-col space-y-4 mt-4">
+              <label htmlFor="question2" className="font-medium">
+                Question 2 <span className="text-red-600">*</span>
+              </label>
+              <select
+                id="question2"
+                value={question2}
+                onChange={handleQuestion2Change}
+                className="w-full border-gray-200 border-[1px] rounded-sm shadow-sm p-1"
+              >
+                <option value="">Select a question</option>
+                {questionOptions
+                  .filter((option) => option !== question1 && option !== question3)
+                  .map((option, index) => (
+                    <option key={index} value={option}>
+                      {option}
+                    </option>
+                  ))}
+              </select>
+              <input className="w-full border-gray-200 border-[1px] rounded-sm shadow-sm p-1" type="email" value={answer2} onChange={(e) => setAnswer2(e.target.value)} placeholder="Anwer" required />
+            </div>
 
-      <div className="flex flex-col space-y-4 mt-4">
-        <label htmlFor="question3" className="font-medium">
-          Question 3 <span className="text-red-600">*</span>
-        </label>
-        <select
-          id="question3"
-          value={question3}
-          onChange={handleQuestion3Change}
-          className="w-full border-gray-200 border-[1px] rounded-sm shadow-sm p-1"
-        >
-          <option value="">Select a question</option>
-          {questionOptions
-            .filter((option) => option !== question1 && option !== question2)
-            .map((option, index) => (
-              <option key={index} value={option}>
-                {option}
-              </option>
-            ))}
-        </select>
-        <input className="w-full border-gray-200 border-[1px] rounded-sm shadow-sm p-1" type="email" value={answer3} onChange={(e) => setAnswer3(e.target.value)} placeholder="Anwer" required />
-     
-      </div>
-    </div>
+            <div className="flex flex-col space-y-4 mt-4">
+              <label htmlFor="question3" className="font-medium">
+                Question 3 <span className="text-red-600">*</span>
+              </label>
+              <select
+                id="question3"
+                value={question3}
+                onChange={handleQuestion3Change}
+                className="w-full border-gray-200 border-[1px] rounded-sm shadow-sm p-1"
+              >
+                <option value="">Select a question</option>
+                {questionOptions
+                  .filter((option) => option !== question1 && option !== question2)
+                  .map((option, index) => (
+                    <option key={index} value={option}>
+                      {option}
+                    </option>
+                  ))}
+              </select>
+              <input className="w-full border-gray-200 border-[1px] rounded-sm shadow-sm p-1" type="email" value={answer3} onChange={(e) => setAnswer3(e.target.value)} placeholder="Anwer" required />
+
+            </div>
+          </div>
 
 
 
