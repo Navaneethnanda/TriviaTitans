@@ -6,8 +6,19 @@ function GameLobby() {
   const navigate = useNavigate();
   const [triviaGames, setTriviaGames] = useState([]);
   const [filteredGames, setFilteredGames] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedDifficulty, setSelectedDifficulty] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedDifficulty, setSelectedDifficulty] = useState('');
+
+
+
+
+const startgame=(id)=>{
+
+navigate("/game/")
+
+};
+
+
 
   useEffect(() => {
     axios
@@ -50,8 +61,10 @@ function GameLobby() {
   };
 
   return (
-    <div className="container">
-      <nav>{/* <h1 className="heading">Game Lobby</h1> */}</nav>
+    <div className="container mx-auto">
+      <nav>
+        {/* <h1 className="heading">Game Lobby</h1> */}
+      </nav>
 
       <div className="filters">
         <div className="filter-item mt-4">
@@ -82,16 +95,16 @@ function GameLobby() {
         </div>
       </div>
       <div className="games-container">
-        {filteredGames.map((game) => (
+        {filteredGames.map(game => (
           <div key={game.Id} className="game card">
             <div className="cardsBody">
               <h2>{game.GameName}</h2>
               <p>Category: {game.Category}</p>
               <p>Difficulty: {game.Difficulty}</p>
               <p>Start Time: {game.StartTime}</p>
-              <button className="btn" onClick={() => handleJoinGame(game)}>
-                Game Details
-              </button>
+              <button className="game-details-button" onClick={() => handleJoinGame(game)}>Game Details</button>
+
+              <button onClick={() => startgame(game.Id)} className="!bg-red-600 text-white mt-2 mx-auto  p-3 rounded-md">start game</button>
             </div>
           </div>
         ))}

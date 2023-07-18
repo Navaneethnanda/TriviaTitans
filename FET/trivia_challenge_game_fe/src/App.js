@@ -8,11 +8,10 @@ import {
   Route,
   useNavigate,
 } from "react-router-dom";
-import bgImg from "./Assets/bg-doodle.jpeg";
-import "./App.css";
-
-import Login from "./components/authentication/Login";
-import ProfilePage from "./components/authentication/ProfilePage";
+import bgImg from './Assets/bg-doodle.jpeg';
+import './App.css';
+import Login from './components/authentication/Login';
+import ProfilePage from './components/authentication/ProfilePage';
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase";
 import SecurityQuestion from "./components/authentication/SecurityQuestion";
