@@ -25,6 +25,7 @@ import Categories from "./components/Admin/Categories";
 import CreateCategory from "./components/Admin/CreateCategory";
 import GameLobby from "./components/Lobby/GameLobby";
 import GameDetailsPage from "./components/Lobby/GameDetailsPage";
+import GamePage from "./components/Game/GamePage";
 
 function App() {
   const [currentUser, setCurrentUser] = useState("");
@@ -72,6 +73,8 @@ function App() {
 
           <Route path="/lobby" element={<GameLobby />} />
           <Route path="/gameDetails" element={<GameDetailsPage />} />
+
+          <Route path="/game/:gameID" element={<GamePage />} />
         </Routes>
       </Router>
     </div>
