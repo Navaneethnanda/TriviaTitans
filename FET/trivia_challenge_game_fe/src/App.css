@@ -1,57 +1,38 @@
 * {
   padding: 0px;
-
   box-sizing: border-box;
-
 }
-.cardsBody{
-  margin: 5vh;
 
+.cardsBody {
+  margin: 5vh;
 }
 
 .body-text {
-
   display: flex;
-
   font-family: "Montserrat", sans-serif;
-
   align-items: center;
-
   justify-content: center;
-
   margin-top: 250px;
-
 }
 
 nav {
-
   display: flex;
-
-  
-
   align-items: center;
-
   min-height: 8vh;
-
   background-color: teal;
-
   font-family: "Montserrat", sans-serif;
-
 }
 
-
 .heading {
-
   color: white;
   text-transform: uppercase;
   letter-spacing: 5px;
   font-size: 20px;
   margin-left: auto;
   margin-right: auto;
-
 }
 
-.profile_element{
+.profile_element {
   color: white;
   text-transform: uppercase;
   font-size: 40px;
@@ -59,47 +40,29 @@ nav {
   margin-right: 4em;
 }
 
-
 .nav-links {
-
   display: flex;
-
   justify-content: space-around;
-
   width: 30%;
-
 }
 
 li {
-
   list-style: none;
-
 }
 
 .nav-links a {
-
   color: white;
-
   text-decoration: none;
-
   letter-spacing: 3px;
-
   font-weight: bold;
-
   font-size: 14px;
-
   padding: 14px 16px;
-
 }
 
 .nav-links a:hover:not(.active) {
-
   background-color: lightseagreen;
-
 }
 
 .nav-links li a.active {
-
   background-color: #4caf50;
-
 }

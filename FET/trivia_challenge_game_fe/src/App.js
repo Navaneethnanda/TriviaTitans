@@ -9,6 +9,8 @@ import {
 } from "react-router-dom";
 import bgImg from './Assets/bg-doodle.jpeg';
 import './App.css';
+import Card from "react-bootstrap/Card";
+import Button from "react-bootstrap/Button";
 import Login from './components/authentication/Login';
 import ProfilePage from './components/authentication/ProfilePage';
 import { onAuthStateChanged } from "firebase/auth";
@@ -21,6 +23,7 @@ import Question from './components/Admin/Questions';
 import EditQuestion from './components/Admin/EditQuestion';
 import Categories from './components/Admin/Categories';
 import CreateCategory from './components/Admin/CreateCategory';
+import GameLobby from './components/Lobby/GameLobby';
 
 function App() {
   const [currentUser,setCurrentUser]=useState("");
@@ -74,6 +77,7 @@ function App() {
           <Route path='/categories' element={<Categories />} />
           <Route path='/createcategory' element={<CreateCategory />} />
 
+          <Route path='/lobby' element={<GameLobby />} />
           
           
           </Routes>
