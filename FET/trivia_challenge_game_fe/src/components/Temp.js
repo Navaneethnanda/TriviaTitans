@@ -1,10 +1,7 @@
-export default function Temp(){
 
 
-    return (
+export default function Temp(props){
 
-        <div>
-        <h1>dfdff</h1>
-        </div>
-    );
+
+  return <h1>dfdfd</h1>;
 }

@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Container, Row, Col, Card, Button } from "react-bootstrap";
+import {useParams} from "react-router-dom";
 
 function GamePage() {
   const [allQuestions, setAllQuestions] = useState([]);
-  const [gameId] = useState("7438791d-10b5-410a-b2d8-ca8114ddcc24"); // Replace with the actual game ID
+  const {gameID} = useParams();
   const [selectedAnswers, setSelectedAnswers] = useState({});
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [timeLeft, setTimeLeft] = useState(20);
@@ -32,7 +33,7 @@ function GamePage() {
         "https://907fx2wvif.execute-api.us-east-1.amazonaws.com/Dev/questions"
       );
       const allData = response.data.value;
-      const filteredArray = allData.filter((item) => item.GameId === gameId);
+      const filteredArray = allData.filter((item) => item.gameId === gameID);
       setAllQuestions(filteredArray);
     } catch (error) {
       console.error("Failed to fetch trivia questions:", error);
@@ -62,13 +63,14 @@ function GamePage() {
   };
 
   if (allQuestions.length === 0) {
-    return <div>Loading...</div>;
+    return <div>Loading...  +{gameID}</div>;
   }
 
   const currentQuestion = allQuestions[currentQuestionIndex];
 
   return (
     <Container className="d-flex flex-column align-items-center">
+
       <h1 className="mt-4">Quiz Game</h1>
       <p>Time Left: {timeLeft} seconds</p>
       <Row className="justify-content-center">

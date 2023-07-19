@@ -13,8 +13,8 @@ function GameLobby() {
 
 
 const startgame=(id)=>{
-
-navigate("/game/")
+console.log(id);
+navigate("/game/"+id)
 
 };
 
