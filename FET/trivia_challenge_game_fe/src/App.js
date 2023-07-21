@@ -13,21 +13,6 @@ import './App.css';
 import Login from './components/authentication/Login';
 import ProfilePage from './components/authentication/ProfilePage';
 import { onAuthStateChanged } from "firebase/auth";
-<<<<<<< Updated upstream
-import { auth } from "./firebase";
-import SecurityQuestion from "./components/authentication/SecurityQuestion";
-import AdminHome from "./components/Admin/AdminHome";
-import GameCreation from "./components/Admin/GameCreation";
-import QuestionCreation from "./components/Admin/QuestionCreation";
-import Question from "./components/Admin/Questions";
-import EditQuestion from "./components/Admin/EditQuestion";
-import Categories from "./components/Admin/Categories";
-import CreateCategory from "./components/Admin/CreateCategory";
-import GameLobby from "./components/Lobby/GameLobby";
-import GameDetailsPage from "./components/Lobby/GameDetailsPage";
-import GamePage from "./components/Game/GamePage";
-import Temp from "./components/Temp";
-=======
 import { auth } from './firebase';
 import SecurityQuestion from './components/authentication/SecurityQuestion';
 import AdminHome from './components/Admin/AdminHome';
@@ -40,7 +25,6 @@ import CreateCategory from './components/Admin/CreateCategory';
 import GameLobby from './components/Lobby/GameLobby';
 import GameDetailsPage from './components/Lobby/GameDetailsPage';
 import Chat from './components/Game/Chat';
->>>>>>> Stashed changes
 
 function App() {
   const [currentUser, setCurrentUser] = useState("");
@@ -86,22 +70,12 @@ function App() {
           <Route path="/categories" element={<Categories />} />
           <Route path="/createcategory" element={<CreateCategory />} />
 
-<<<<<<< Updated upstream
-          <Route path="/lobby" element={<GameLobby />} />
-          <Route path="/gameDetails" element={<GameDetailsPage />} />
-
-         {/*<Route path="/game/:gameID" element={<GamePage />} />*/}
-
-          <Route path="/game/:gameID" element={<GamePage />} />
-        </Routes>
-=======
           <Route path='/lobby' element={<GameLobby />} />
           <Route path='/gameDetails' element={<GameDetailsPage />} />
           
 
           <Route path='/chat' element={<Chat />} />          
           </Routes>
->>>>>>> Stashed changes
       </Router>
     </div>
   );
