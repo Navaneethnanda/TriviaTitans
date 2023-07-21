@@ -62,9 +62,13 @@ navigate("/game/"+id)
 
   return (
     <div className="container mx-auto">
+<<<<<<< Updated upstream
       <nav>
         {/* <h1 className="heading">Game Lobby</h1> */}
       </nav>
+=======
+ 
+>>>>>>> Stashed changes
 
       <div className="filters">
         <div className="filter-item mt-4">
@@ -102,9 +106,15 @@ navigate("/game/"+id)
               <p>Category: {game.Category}</p>
               <p>Difficulty: {game.Difficulty}</p>
               <p>Start Time: {game.StartTime}</p>
+<<<<<<< Updated upstream
               <button className="game-details-button" onClick={() => handleJoinGame(game)}>Game Details</button>
 
               <button onClick={() => startgame(game.Id)} className="!bg-red-600 text-white mt-2 mx-auto  p-3 rounded-md">start game</button>
+=======
+              <button onClick={() => handleJoinGame(game)}>Game Details</button>
+
+              <button onClick={() => handleJoinGame(game)}></button>
+>>>>>>> Stashed changes
             </div>
           </div>
         ))}
