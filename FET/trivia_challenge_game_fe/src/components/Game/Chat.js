@@ -1,24 +1,22 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
-const Chat = () => {
+const Chat = ({chat, setChat,id}) => {
   const [messages, setMessages] = useState([]);
   const [inputValue, setInputValue] = useState('');
   const chatContainerRef = useRef(null);
-  const [roomid, setRoomid] = useState('');
   const socketRef = useRef(null);
   const [connectionStatus,setConnectionStatus]=useState("submit");
-  
   const [user,setUser]=useState();
 
   const handleInputChange = (e) => {
     setInputValue(e.target.value);
   };
 
-  const handleSendMessage = () => {
+  const handleSendMessage = async () => {
 
     if (!(socketRef.current && socketRef.current.readyState === WebSocket.OPEN)) {
-      handleConnect();
+     handleConnect();
     }
    
     
@@ -27,7 +25,7 @@ const Chat = () => {
 
       if (socketRef.current && socketRef.current.readyState === WebSocket.OPEN) {
         const message = {
-          roomId: roomid,
+          roomId: id,
           message: inputValue,
           action:"sendmessage",
           user:user?user:"anonymous"
@@ -40,7 +38,7 @@ const Chat = () => {
   };
 
   const handleConnect = () => {
-    const socket = new WebSocket('wss://g6vyqz78f1.execute-api.us-east-1.amazonaws.com/dev?roomId=' + roomid);
+    const socket = new WebSocket('wss://g6vyqz78f1.execute-api.us-east-1.amazonaws.com/dev?roomId=' + id);
     if (socketRef.current) {
       socketRef.current.close();
     }
@@ -87,7 +85,7 @@ const Chat = () => {
 
   useEffect(() => {
     // Establish WebSocket connection when the component mounts
-  
+    handleConnect();
 
     // Close WebSocket connection when the component unmounts
     return () => {
@@ -95,7 +93,7 @@ const Chat = () => {
         socketRef.current.close();
       }
     };
-  }, [roomid]);
+  },[]);
 
 
 
@@ -116,24 +114,26 @@ const Chat = () => {
   }, [messages]);
 
   return (
-    <div className="max-w-md mx-auto p-4 bg-white rounded-lg shadow-md mt-8">
-      <div className="mb-4 flex items-center justify-between">
+    <div className="max-w-md mx-auto p-4 bg-white rounded-lg border-[1px] border-gray-300 shadow-md  mt-8 relative">
+     {/*} <div className="mb-4 flex items-center justify-between">
         <h2 className="text-lg font-bold">Chat App</h2>
         <input className='border border-gray-300 rounded-lg px-1 py-2 focus:outline-none focus:border-blue-500 w-18 mr-4'
           value={roomid}
           onChange={(e) => { setRoomid(e.target.value); }} onKeyPress={handleRoomPress}
         />
         <button className='bg-blue-500 text-white p-2 rounded-md' onClick={handleConnect}>{connectionStatus}</button>
-      </div>
-      <div
+  </div>*/}
+  <div  className='bg-red-600 w-7 h-7 absolute top-4 right-4 rounded-full text-white text-lg font-bold text-center cursor-pointer' onClick={()=>{setChat(!chat)}}>X</div>
+  <h1 className='text-center text-lg font-bold mb-4'>Team chat</h1>  
+  <div
         ref={chatContainerRef}
-        className="border border-gray-300 rounded-lg p-4 h-64 overflow-y-auto"
+        className="border border-gray-300 rounded-lg p-4 h-64 overflow-y-auto "
       >
         {messages.map((message) => (
-          <div key={message.id} className="mb-2">
-            <div className="bg-gray-100 p-2 rounded-md max-w-[70%] ml-auto">
-              <span className="font-semibold block text-gray-900">{message.user}</span>
-              <span>{message.text}</span>
+          <div key={message.id} className="mb-2 flex ">
+            <div className="bg-gray-300 py-2 px-4 rounded-3xl max-w-[85%] ml-auto p">
+              <span className="font-semibold block text-gray-900 text-sm">{message.user}</span>
+              <span className='text-sm'>{message.text}</span>
             </div>
           </div>
         ))}
@@ -144,11 +144,11 @@ const Chat = () => {
           value={inputValue}
           onChange={handleInputChange}
           onKeyPress={handleKeyPress}
-          className="flex-1 rounded-l-lg p-2 border border-gray-300 focus:outline-none"
+          className="flex-1 rounded-l-lg p-2 border border-gray-300 focus:outline-none text-sm"
         />
         <button
           onClick={handleSendMessage}
-          className="bg-blue-500 hover:bg-blue-600 text-white rounded-r-lg px-4 py-2 ml-2"
+          className="bg-blue-500 hover:bg-blue-600 text-white rounded-r-lg px-4 py-2 ml-2 text-sm"
         >
           Send
         </button>

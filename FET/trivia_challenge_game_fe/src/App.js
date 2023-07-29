@@ -25,6 +25,8 @@ import CreateCategory from './components/Admin/CreateCategory';
 import GameLobby from './components/Lobby/GameLobby';
 import GameDetailsPage from './components/Lobby/GameDetailsPage';
 import Chat from './components/Game/Chat';
+import Chatbot from "./components/chatbot/Chatbot";
+import GamePage from "./components/Game/GamePage";
 
 function App() {
   const [currentUser, setCurrentUser] = useState("");
@@ -72,9 +74,11 @@ function App() {
 
           <Route path='/lobby' element={<GameLobby />} />
           <Route path='/gameDetails' element={<GameDetailsPage />} />
+          <Route path='/game/:id' element={<GamePage />} />
           
 
-          <Route path='/chat' element={<Chat />} />          
+          <Route path='/chat' element={<Chat />} />
+          <Route path='/chatbot' element={<Chatbot />} />              
           </Routes>
       </Router>
     </div>

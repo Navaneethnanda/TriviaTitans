@@ -6,6 +6,7 @@ import { HeartIcon } from "@heroicons/react/24/solid";
 import { auth } from "../../firebase";
 import Modal from "react-modal";
 import axios from "axios";
+import Chatbot from "../chatbot/Chatbot";
 
 export default function ProfilePage() {
   const [saved, setsaved] = useState(true);
@@ -23,6 +24,7 @@ export default function ProfilePage() {
   const [totalWins, setTotalWins] = useState("");
   const [points, setPoints] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [chat,setChat]=useState(true);
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
@@ -155,14 +157,17 @@ export default function ProfilePage() {
   };
 
   return (
-    <div className="flex items-center justify-center">
-      <div className="bg-white w-full sm:w-[640px] margin top mt-6 p-8 rounded-md shadow-sm border-[1px]">
+    <div className="flex items-center justify-center ">
+    <div className={"fixed bottom-4 right-4  p-3 text-xl rounded-lg transition-opacity duration-500 ease-in-out  md:w-[40vw] xl:w-[30vw] "+(chat?"opacity-0 hidden":"opacity-100 block") } >
+    <Chatbot chat={chat} setChat={setChat}/>
+    </div>
+      <div className="bg-white w-full sm:w-[640px] margin top mt-6 mb-16 p-8 rounded-md shadow-sm border-[1px]">
         <div className="flex items-center justify-between mb-4">
           <div className="font-bold text-3xl">Profile</div>
           <button
             className="bg-blue-500 text-white font-bold text-xl p-4 rounded-md"
             onClick={handleLogout}
-          >
+          > 
             Signout
           </button>
         </div>
@@ -285,7 +290,7 @@ export default function ProfilePage() {
                 onClick={handleSaveDetails}
               />
             </div>
-            <div className=" bg-[#C1292E] p-3 text-white font-bold text-xl max-w-fit rounded-md cursor-pointer">
+            <div className=" bg-[#C1292E] p-3 text-white font-bold text-xl max-w-fit rounded-md cursor-pointer ">
               <input
                 type="submit"
                 value="Cancel"
@@ -296,6 +301,13 @@ export default function ProfilePage() {
           </div>
         </div>
       </Modal>
+
+      <div
+        className={"fixed bottom-4 right-4 bg-[#C1292E] p-3 transition-opacity duration-500 ease-in-out text-white font-bold text-xl rounded-full cursor-pointer  "+(chat?"opacity-100 block":"opacity-0 hidden")}
+        onClick={()=>{setChat(!chat)}}>
+  <p>    Help and FAQ</p>
+        
+      </div>
     </div>
   );
 }
