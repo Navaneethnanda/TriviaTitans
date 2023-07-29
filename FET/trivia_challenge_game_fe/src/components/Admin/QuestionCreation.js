@@ -73,6 +73,14 @@ export default function QuestionCreation() {
   
     const randomId = uuidv4();
 
+    const dataVal={
+      "question": questionname + " " + questionname + " " +  questionname + " " + questionname + " " + questionname
+      }
+    const tagresponse =  await axios.post('https://us-central1-serverless-question-tagging.cloudfunctions.net/question-tag', dataVal);
+    console.log("------------------------------------------------");
+    console.log(tagresponse?.data[0]);
+    const tags = tagresponse?.data[0]?.split("/")?.join(",")?.substring(1);
+
     const data={
       "Id": randomId,
       "Question": questionname,
@@ -84,7 +92,8 @@ export default function QuestionCreation() {
       "Hint": hint,
       "Category": questioncategory,
       "Difficulty": questiondifficultylevel,
-      "GameId": gameId
+      "GameId": gameId,
+      "AutomatedTag": tags
       }
 
       const requestPayload = {
