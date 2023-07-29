@@ -79,6 +79,8 @@ navigate("/game/"+id)
             </select>
           </label>
         </div>
+
+        
         <div className="filter-item search-item mt-4 mb-4">
           <label>
             Search:

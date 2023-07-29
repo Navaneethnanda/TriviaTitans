@@ -32,6 +32,8 @@ export default function ProfilePage() {
         setCurrentUserEmail(user.email);
 
         fetchActiveUserDetails(user.email);
+        localStorage.setItem("email",user.email);
+        localStorage.setItem("username",user.displayName);
         //setName(user.displayName || "");
         //setEmail(user.email || "");
       } else {

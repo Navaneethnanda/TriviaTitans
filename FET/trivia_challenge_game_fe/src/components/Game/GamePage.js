@@ -1,39 +1,33 @@
-// GamePage.js
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useParams,useLocation } from "react-router-dom";
+import { useParams, useLocation, useNavigate } from "react-router-dom";
 import Chat from "./Chat";
 import Question from "./Question";
+import Modal from "react-modal";
 
 function GamePage() {
+  // Time configuration for question and break time
+  const questiontime = 2; // Time for each question in seconds
+  const breaktime = 1; // Break time between questions in seconds
+const navigate=useNavigate();
   const location = useLocation();
   const [allQuestions, setAllQuestions] = useState([]);
+  const [questionCount, setQuestionCount] = useState(0);
   const { id } = useParams();
   const [selectedAnswers, setSelectedAnswers] = useState({});
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [timeLeft, setTimeLeft] = useState(120);
+  const [timeLeft, setTimeLeft] = useState(questiontime);
+  const [breakTime, setBreakTime] = useState(breaktime);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [chat, setChat] = useState(true);
-  const team=location.state?.team;
-  
-  
+  const team = location.state?.team;
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isBreakTime, setIsBreakTime] = useState(false);
+  const [submitButton,setSubmitButton]=useState("submit");
 
-  useEffect(() => {
-    fetchData();
-  }, []);
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      if (timeLeft > 0 && !isSubmitted) {
-        setTimeLeft((prevTime) => prevTime - 1);
-      } else if (timeLeft === 0 && !isSubmitted) {
-        handleNextQuestion();
-      }
-    }, 1000);
 
-    return () => clearInterval(timer);
-  }, [isSubmitted, timeLeft]);
-
+  // Fetch data for the selected game ID from the API
   const fetchData = async () => {
     try {
       const response = await axios.get(
@@ -42,37 +36,110 @@ function GamePage() {
       const allData = response.data.value;
       const filteredArray = allData.filter((item) => item.GameId === id);
       setAllQuestions(filteredArray);
+      setQuestionCount(filteredArray.length);
+      if(filteredArray.length==0){
+        alert("!!!!no questions associated with the quiz are found please contact the administrator. Heading back to lobby");
+
+        navigate("/lobby");
+
+        // setTimeout(() => {
+        // }, 2000);
+      }
     } catch (error) {
       console.error("Failed to fetch trivia questions:", error);
     }
   };
 
+
+
+  
+
+  // brings all the queswtions required for the gamme in the beginning of the game.
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+
+
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      if (!isBreakTime) {
+        console.log("questionview")
+        // During question time
+        if (timeLeft > 0 && !isSubmitted) {
+          setTimeLeft((prevTime) => prevTime - 1);
+        } else if (timeLeft === 0 && !isSubmitted) {
+          // When the time for a question is up
+          setIsBreakTime(true); // Set break time to true
+          setTimeLeft(breakTime); // Set time for the break
+        }
+        else if(timeLeft === 0 && isSubmitted) {
+          handleSubmit();
+        }
+      } else {
+
+        console.log("breeak view")
+        // During break time
+        if (timeLeft > 0) {
+          setTimeLeft((prevTime) => prevTime - 1);
+        } else {
+          setIsBreakTime(false); // Reset break time to false
+          handleNextQuestion(); // Move to the next question
+        }
+      }
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [isBreakTime, isSubmitted, timeLeft, breakTime]);
+
+
+
+
+  // Handle user selected answers for a question
   const handleAnswer = (questionId, selectedOption) => {
     setSelectedAnswers((prevState) => ({
       ...prevState,
       [questionId]: selectedOption,
     }));
+    // console.log(selectedAnswers);
   };
 
+
+
+
+
+  // Move to the next question
   const handleNextQuestion = () => {
-    if (currentQuestionIndex < allQuestions.length - 1) {
-      setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
-      setTimeLeft(120);
-    } else {
-      setIsSubmitted(true);
+    console.log(isSubmitted,"handle next question",currentQuestionIndex);
+    if (currentQuestionIndex+1 < allQuestions.length - 1) {
+
+    setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
+      setTimeLeft(questiontime); // Set time for the next question
+      
+    } else{
+      setCurrentQuestionIndex((prevIndex) => prevIndex + 1);  
+      setIsSubmitted(true); // If all questions are answered, set submission to true
     }
   };
 
   const handleSubmit = () => {
     // Handle submit logic
     console.log("Selected Answers:", selectedAnswers);
-    setIsSubmitted(true);
+    setSubmitButton("submitted");
+    setTimeout(() => {
+    
+    }, 1000);
   };
 
   const currentQuestion = allQuestions[currentQuestionIndex];
 
   return (
     <div className="flex flex-col items-center">
+
+
+
+      {/* Chat section */}
       <div
         className={
           "fixed bottom-4 right-4 p-3 text-xl rounded-lg transition-opacity duration-500 ease-in-out md:w-[40vw] xl:w-[30vw] " +
@@ -92,43 +159,43 @@ function GamePage() {
       >
         <p>Team Chat</p>
       </div>
+{/*chat section*/}
 
+
+
+
+      {/* questions section */}
       {allQuestions.length === 0 ? (
         <p>Loading questions...</p>
-      ) : currentQuestion ? (
+      ) : isBreakTime ? (
+        <div className="mt-8 w-3/4 mx-auto bg-[#f9f9f9] px-6 py-7 rounded-xl ">
+          Your next question will be up in {timeLeft} seconds.
+        </div>
+      ) : (
         <Question
           question={currentQuestion}
           currentQuestionIndex={currentQuestionIndex}
           handleAnswer={handleAnswer}
           isSubmitted={isSubmitted}
         />
-      ) : (
-        <p>No questions available for this game ID.</p>
       )}
-      {isSubmitted ? (
-        <button
-          className="px-4 py-2 mt-4 bg-gray-400 rounded-lg cursor-not-allowed"
-          disabled
-        >
-          Next
-        </button>
-      ) : (
-        <button
-          className="px-4 py-2 mt-4 bg-blue-500 hover:bg-blue-600 text-white rounded-lg"
-          onClick={handleNextQuestion}
-        >
-          Next
-        </button>
-      )}
+
+      {/* questions section */}
+
+
+
+      {/* Display submit button when all questions are answered */}
       {isSubmitted && (
         <button
           className="px-4 py-2 mt-4 bg-green-500 hover:bg-green-600 text-white rounded-lg"
           onClick={handleSubmit}
           disabled
         >
-          Submit
+          {submitButton}
         </button>
       )}
+
+      
     </div>
   );
 }

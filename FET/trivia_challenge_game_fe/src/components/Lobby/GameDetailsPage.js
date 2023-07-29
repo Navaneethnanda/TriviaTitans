@@ -7,25 +7,32 @@ function GameDetailsPage() {
   const location = useLocation();
   const activeGame = location.state?.game;
   const [teamList, setTeamList] = useState(['none']);
-  const [team, setTeam] = useState('none');
-  const [active, setActive] = useState(false);
+  const [team, setTeam] = useState('dal');
+  const [active, setActive] = useState(true);
   const gameStartDate = activeGame?.StartDate;
   const gamestartTime = activeGame?.StartTime;
 
-  useEffect(() => {
-    if (compareDates(gameStartDate) === 0) {
-      if (compareTime(gamestartTime) === 0) {
-        setActive(true);
-        console.log(compareDates(gameStartDate) === 0,compareTime(gamestartTime) === 0)
-      } else {
-        setActive(false);
-        console.log(compareDates(gameStartDate) === 0,compareTime(gamestartTime) === 0)
-      }
-    } else {
-      setActive(false);
-      console.log(compareDates(gameStartDate) === 0,compareTime(gamestartTime) === 0,(new Date()).getTime())
-    }
-  }, [])
+
+
+
+//for letting user access the game
+  // useEffect(() => {
+  //   if (compareDates(gameStartDate) === 0) {
+  //     if (compareTime(gamestartTime) === 0) {
+  //       setActive(true);
+  //       console.log(compareDates(gameStartDate) === 0,compareTime(gamestartTime) === 0)
+  //     } else {
+  //       setActive(false);
+  //       console.log(compareDates(gameStartDate) === 0,compareTime(gamestartTime) === 0)
+  //     }
+  //   } else {
+  //     setActive(false);
+  //     console.log(compareDates(gameStartDate) === 0,compareTime(gamestartTime) === 0,(new Date()).getTime())
+  //   }
+  // }, [])
+
+
+
 
   function compareDates(date1) {
     const date1Object = new Date(date1);
