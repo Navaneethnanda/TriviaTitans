@@ -23,7 +23,7 @@ function SelectTeam() {
     }, [])
 
     const handleTeamSelect = (teamName) => {
-        navigate(`/team/manage/${teamName}`);
+        navigate(`/team/manage/${teamName}`, { state: { teamName } });
     }
 
     return (
