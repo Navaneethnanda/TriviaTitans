@@ -29,6 +29,8 @@ import Chatbot from "./components/chatbot/Chatbot";
 import GamePage from "./components/Game/GamePage";
 import TeamOptions from "./components/Team/teamOptions";
 import CreateTeam from "./components/Team/createTeam";
+import SelectTeam from "./components/Team/selectTeam";
+import ManageTeam from "./components/Team/manageTeam";
 
 function App() {
   const [currentUser, setCurrentUser] = useState("");
@@ -66,8 +68,8 @@ function App() {
           <Route path="/SQ" element={<SecurityQuestion />} />
           <Route path="/team" element={<TeamOptions />} />
           <Route path="/team/create" element={<CreateTeam />} />
-          <Route path="/team/select-team" element={<TeamOptions />} />
-          <Route path="/team/manage/:teamname" element={<TeamOptions />} />
+          <Route path="/team/select-team" element={<SelectTeam />} />
+          <Route path="/team/manage/:teamname" element={<ManageTeam />} />
 
           {/*Admin Routes */}
           <Route path="/admin" element={<AdminHome />} />

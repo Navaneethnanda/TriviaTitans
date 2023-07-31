@@ -18,7 +18,7 @@ function CreateTeam() {
             const response = await axios.post("https://lffl4ynmg7.execute-api.us-east-1.amazonaws.com/prod", teamData);
             if (response.data.status === 'success') {
                 alert("Team has been created! Redirecting to Manage Team page");
-                navigate('/team/manage', { state: { teamName } });
+                navigate(`/team/manage/${teamName}`, { state: { teamName } });
             } else {
                 alert("Team Creation Failed.")
             }
