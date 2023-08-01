@@ -32,6 +32,7 @@ import CreateTeam from "./components/Team/createTeam";
 import SelectTeam from "./components/Team/selectTeam";
 import ManageTeam from "./components/Team/manageTeam";
 import InviteMember from "./components/Team/inviteMember";
+import Invitation from "./components/Team/getInvitation";
 
 function App() {
   const [currentUser, setCurrentUser] = useState("");
@@ -72,6 +73,7 @@ function App() {
           <Route path="/team/select-team" element={<SelectTeam />} />
           <Route path="/team/manage/:teamname" element={<ManageTeam />} />
           <Route path="/team/:teamname/invite" element={<InviteMember />} />
+          <Route path="/invitation/:teamname/:inviter" element={<Invitation />} />
 
           {/*Admin Routes */}
           <Route path="/admin" element={<AdminHome />} />
