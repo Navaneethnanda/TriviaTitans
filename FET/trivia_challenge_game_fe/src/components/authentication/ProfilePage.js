@@ -32,8 +32,8 @@ export default function ProfilePage() {
         setCurrentUserEmail(user.email);
 
         fetchActiveUserDetails(user.email);
-        //setName(user.displayName || "");
-        //setEmail(user.email || "");
+        localStorage.setItem("email",user.email);
+        localStorage.setItem("username",user.displayName);
       } else {
         navigate("/login");
       }
@@ -210,6 +210,12 @@ export default function ProfilePage() {
           <div className="text-2xl mt-4">Total Wins: {totalWins}</div>
           <div className="text-2xl mt-4">Total Points: {points}</div>
         </div>
+        <button
+        className="fixed bottom-4 left-4 bg-blue-500 text-white font-bold text-xl p-3 rounded-md"
+        onClick={() => navigate('/team')}
+      >
+        Go to Team
+      </button>
       </div>
 
       <Modal
