@@ -6,10 +6,11 @@ function SelectTeam() {
 
     const navigate = useNavigate();
     const [teams, setTeams] = useState([]);
+    const userEmail=localStorage.getItem("email");
 
     useEffect(() => {
         const userData = {
-            "UserEmail": "ad766375@dal.ca"
+            "UserEmail": userEmail
         }
         const fetchTeams = async () => {
             try {

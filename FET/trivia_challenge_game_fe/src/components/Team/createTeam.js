@@ -7,10 +7,11 @@ function CreateTeam() {
 
     const navigate = useNavigate();
     const [teamName, setTeamname] = useState("");
+    const userEmail=localStorage.getItem("email");
 
     const handleSubmit = async () => {
         const teamData = {
-            "UserEmail": "ad766375@dal.ca",
+            "UserEmail": userEmail,
             "TeamName": teamName,
             "UserRole": "Admin"
         }

@@ -9,6 +9,7 @@ function ManageTeam() {
     const location = useLocation();
     const teamName = location.state.teamName;
     const [teamData, setTeamData] = useState([]);
+    const userEmail=localStorage.getItem("email");
 
     useEffect(() => {
         const fetchTeamData = async () => {
@@ -48,7 +49,7 @@ function ManageTeam() {
 
     const handleLeave = async () => {
         const leaveData =  {
-            "UserEmail": "ad766375@dal.ca",
+            "UserEmail": userEmail,
             "TeamName": teamName
         }
 

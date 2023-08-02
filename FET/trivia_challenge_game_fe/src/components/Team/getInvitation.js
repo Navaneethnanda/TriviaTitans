@@ -6,12 +6,13 @@ function Invitation() {
 
     const {teamname, inviter} = useParams();
     const decodedInviterEmail = decodeURIComponent(inviter);
+    const userEmail=localStorage.getItem("email");
 
     const handleAccept = async () => {
         const acceptData = {
             "TeamName": teamname,
             "Inviter": decodedInviterEmail,
-            "Invitee": "ad766375@dal.ca"
+            "Invitee": userEmail
         }
         try{
             const response = await axios.post("https://mcfn0zybr4.execute-api.us-east-1.amazonaws.com/prod", acceptData);
@@ -31,7 +32,7 @@ function Invitation() {
         const rejectData = {
             "TeamName": teamname,
             "Inviter": decodedInviterEmail,
-            "Invitee": "ad766375@dal.ca"
+            "Invitee": userEmail
         }
         try{
             const response = await axios.post("https://mqa4dh0qld.execute-api.us-east-1.amazonaws.com/prod", rejectData);

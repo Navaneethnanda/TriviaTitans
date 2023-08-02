@@ -9,10 +9,11 @@ function InviteMember() {
     const location = useLocation();
     const teamName = location.state.teamName
     const [invitee, setInvitee] = useState("");
+    const userEmail=localStorage.getItem("email");
 
     const handleSubmit = async () => {
         const inviteData = {
-            "Inviter": "ad766375@dal.ca",
+            "Inviter": userEmail,
             "TeamName": teamName,
             "Invitee": invitee
         }
