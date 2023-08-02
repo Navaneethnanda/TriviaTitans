@@ -4,28 +4,29 @@ import { useParams, useLocation, useNavigate } from "react-router-dom";
 import Chat from "./Chat";
 import Question from "./Question";
 import Modal from "react-modal";
+import Leaderboard from "./LearderBoard";
 
 function GamePage() {
   // Time configuration for question and break time
-  const questiontime = 2; // Time for each question in seconds
-  const breaktime = 1; // Break time between questions in seconds
-const navigate=useNavigate();
+  const questiontime = 180; // Time for each question in seconds
+  const breaktime = 40; // Break time between questions in seconds
+
+  const navigate = useNavigate();
   const location = useLocation();
   const [allQuestions, setAllQuestions] = useState([]);
-  const [questionCount, setQuestionCount] = useState(0);
   const { id } = useParams();
   const [selectedAnswers, setSelectedAnswers] = useState({});
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [timeLeft, setTimeLeft] = useState(questiontime);
-  const [breakTime, setBreakTime] = useState(breaktime);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [chat, setChat] = useState(true);
   const team = location.state?.team;
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const startDate=location.state?.date;
+  const startTime=location.state?.time;
+  const gameName=location.state?.gameName;
   const [isBreakTime, setIsBreakTime] = useState(false);
-  const [submitButton,setSubmitButton]=useState("submit");
-
-
+  const [submitButton, setSubmitButton] = useState("submit");
+  const [dashboardList,setDashboardList]= useState([]);
 
   // Fetch data for the selected game ID from the API
   const fetchData = async () => {
@@ -36,65 +37,98 @@ const navigate=useNavigate();
       const allData = response.data.value;
       const filteredArray = allData.filter((item) => item.GameId === id);
       setAllQuestions(filteredArray);
-      setQuestionCount(filteredArray.length);
-      if(filteredArray.length==0){
-        alert("!!!!no questions associated with the quiz are found please contact the administrator. Heading back to lobby");
+      console.log("the question count is ",filteredArray.length);
 
+      const timeRequired = filteredArray.length*questiontime + (filteredArray.length-1)*breaktime;
+      const gameStart=new Date(startDate);
+      gameStart.setHours(startTime.split(":")[0]);
+      gameStart.setMinutes(startTime.split(":")[1]);
+
+      const timenow=new Date();
+      let seconds = Math.round((timenow.getTime() - gameStart.getTime() ) / 1000);
+      if(seconds>=timeRequired){
+        alert(
+          "!!!!   Quiz finshed go to dashboards !!!!!"
+        );
         navigate("/lobby");
 
-        // setTimeout(() => {
-        // }, 2000);
+      }
+      else{
+
+        if(Math.floor(seconds / (questiontime+breaktime))==filteredArray.length-1){
+          setCurrentQuestionIndex(filteredArray.length-1);
+          setTimeLeft(questiontime-(seconds % (questiontime+breaktime)));
+          setIsSubmitted(true);
+        }
+        else{
+const currentCycle=Math.floor(seconds / (questiontime+breaktime))
+if(seconds % (questiontime+breaktime)<questiontime){
+  setCurrentQuestionIndex(currentCycle);
+  setIsBreakTime(false); // Set break time to true
+        setTimeLeft(questiontime-(seconds % (questiontime+breaktime)));
+
+}
+else{
+  setCurrentQuestionIndex(currentCycle);
+  setIsBreakTime(true); // Set break time to true
+  fetchDashboardData();
+  setTimeLeft((questiontime+breaktime)-(seconds%(questiontime+breaktime)));
+}
+
+        }
+
+      }
+
+
+
+
+
+
+      if (filteredArray.length === 0) {
+        alert(
+          "!!!!no questions associated with the quiz are found please contact the administrator. Heading back to lobby"
+        );
+        navigate("/lobby");
       }
     } catch (error) {
       console.error("Failed to fetch trivia questions:", error);
     }
   };
 
-
-
-  
-
   // brings all the queswtions required for the gamme in the beginning of the game.
   useEffect(() => {
     fetchData();
   }, []);
 
-
-
-
   useEffect(() => {
-    const timer = setInterval(() => {
-      if (!isBreakTime) {
-        console.log("questionview")
-        // During question time
-        if (timeLeft > 0 && !isSubmitted) {
-          setTimeLeft((prevTime) => prevTime - 1);
-        } else if (timeLeft === 0 && !isSubmitted) {
-          // When the time for a question is up
-          setIsBreakTime(true); // Set break time to true
-          setTimeLeft(breakTime); // Set time for the break
-        }
-        else if(timeLeft === 0 && isSubmitted) {
-          handleSubmit();
-        }
-      } else {
-
-        console.log("breeak view")
-        // During break time
-        if (timeLeft > 0) {
-          setTimeLeft((prevTime) => prevTime - 1);
-        } else {
-          setIsBreakTime(false); // Reset break time to false
-          handleNextQuestion(); // Move to the next question
-        }
+    let timer;
+    if (!isBreakTime) {
+      console.log("question view");
+      // During question time
+      if (timeLeft > 0) {
+        timer = setTimeout(() => setTimeLeft((prevTime) => prevTime - 1), 1000);
+      } else if (timeLeft === 0 && !isSubmitted) {
+        // When the time for a question is up
+        setIsBreakTime(true); // Set break time to true
+        fetchDashboardData();
+        setTimeLeft(breaktime); // Set time for the break
+      } else if (timeLeft === 0 && isSubmitted) {
+        console.log("submitted");
+        handleSubmit();
       }
-    }, 1000);
+    } else {
+      console.log("break view");
+      // During break time
+      if (timeLeft > 0) {
+        timer = setTimeout(() => setTimeLeft((prevTime) => prevTime - 1), 1000);
+      } else {
+        setIsBreakTime(false); // Reset break time to false
+        handleNextQuestion(); // Move to the next question
+      }
+    }
 
-    return () => clearInterval(timer);
-  }, [isBreakTime, isSubmitted, timeLeft, breakTime]);
-
-
-
+    return () => clearTimeout(timer);
+  }, [timeLeft, isBreakTime, isSubmitted]);
 
   // Handle user selected answers for a question
   const handleAnswer = (questionId, selectedOption) => {
@@ -102,23 +136,17 @@ const navigate=useNavigate();
       ...prevState,
       [questionId]: selectedOption,
     }));
-    // console.log(selectedAnswers);
   };
-
-
-
-
 
   // Move to the next question
   const handleNextQuestion = () => {
-    console.log(isSubmitted,"handle next question",currentQuestionIndex);
-    if (currentQuestionIndex+1 < allQuestions.length - 1) {
-
-    setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
+    console.log(isSubmitted, "handle next question", currentQuestionIndex);
+    if (currentQuestionIndex + 1 < allQuestions.length - 1) {
+      setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
       setTimeLeft(questiontime); // Set time for the next question
-      
-    } else{
-      setCurrentQuestionIndex((prevIndex) => prevIndex + 1);  
+    } else if (currentQuestionIndex + 1) {
+      setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
+      setTimeLeft(questiontime);
       setIsSubmitted(true); // If all questions are answered, set submission to true
     }
   };
@@ -126,19 +154,36 @@ const navigate=useNavigate();
   const handleSubmit = () => {
     // Handle submit logic
     console.log("Selected Answers:", selectedAnswers);
+    setSubmitButton("submitting");
     setSubmitButton("submitted");
-    setTimeout(() => {
-    
-    }, 1000);
+    console.log(allQuestions,selectedAnswers);
+    navigate("/postgame/"+id,{ state: { allQuestions,selectedAnswers} });
+    // setTimeout(() => {
+     
+    // }, 3000);
   };
+
+
+const fetchDashboardData=async()=>{
+  try {
+    const response = await axios.post(
+      "  https://1wxmtoxiab.execute-api.us-east-1.amazonaws.com/dev/dashboard"
+    ,{"gameid":id});
+console.log("dsfsdfsdfsdf",response.data.body);
+  setDashboardList(response.data.body);
+
+  }
+  catch (e){
+console.log(e);
+  }
+}
+
+
 
   const currentQuestion = allQuestions[currentQuestionIndex];
 
   return (
     <div className="flex flex-col items-center">
-
-
-
       {/* Chat section */}
       <div
         className={
@@ -159,10 +204,7 @@ const navigate=useNavigate();
       >
         <p>Team Chat</p>
       </div>
-{/*chat section*/}
-
-
-
+      {/*chat section*/}
 
       {/* questions section */}
       {allQuestions.length === 0 ? (
@@ -170,6 +212,7 @@ const navigate=useNavigate();
       ) : isBreakTime ? (
         <div className="mt-8 w-3/4 mx-auto bg-[#f9f9f9] px-6 py-7 rounded-xl ">
           Your next question will be up in {timeLeft} seconds.
+          <Leaderboard gamename={gameName} list={dashboardList}/>
         </div>
       ) : (
         <Question
@@ -177,25 +220,26 @@ const navigate=useNavigate();
           currentQuestionIndex={currentQuestionIndex}
           handleAnswer={handleAnswer}
           isSubmitted={isSubmitted}
+          id={id}
+          team={team}
+          date={startDate}
+          gameName={gameName}
+          timeLeft={timeLeft}
+
         />
       )}
-
       {/* questions section */}
-
-
 
       {/* Display submit button when all questions are answered */}
       {isSubmitted && (
         <button
-          className="px-4 py-2 mt-4 bg-green-500 hover:bg-green-600 text-white rounded-lg"
+          className="px-4 py-2 mt-4 bg-green-500 hover:bg-green-600 text-white rounded-lg cursor-pointer"
           onClick={handleSubmit}
-          disabled
+          
         >
           {submitButton}
         </button>
       )}
-
-      
     </div>
   );
 }

@@ -7,29 +7,31 @@ function GameDetailsPage() {
   const location = useLocation();
   const activeGame = location.state?.game;
   const [teamList, setTeamList] = useState(['none']);
-  const [team, setTeam] = useState('dal');
+  const [team, setTeam] = useState('none');
   const [active, setActive] = useState(true);
   const gameStartDate = activeGame?.StartDate;
   const gamestartTime = activeGame?.StartTime;
 
+  console.log(gameStartDate);
+  console.log(gamestartTime);
 
 
 
-//for letting user access the game
-  // useEffect(() => {
-  //   if (compareDates(gameStartDate) === 0) {
-  //     if (compareTime(gamestartTime) === 0) {
-  //       setActive(true);
-  //       console.log(compareDates(gameStartDate) === 0,compareTime(gamestartTime) === 0)
-  //     } else {
-  //       setActive(false);
-  //       console.log(compareDates(gameStartDate) === 0,compareTime(gamestartTime) === 0)
-  //     }
-  //   } else {
-  //     setActive(false);
-  //     console.log(compareDates(gameStartDate) === 0,compareTime(gamestartTime) === 0,(new Date()).getTime())
-  //   }
-  // }, [])
+// for letting user access the game  only if time now is less than 10 minutes form quizstart time
+  useEffect(() => {
+    if (compareDates(gameStartDate) === 0) {
+      if (compareTime(gamestartTime) === 0) {
+        setActive(true);
+        console.log(compareDates(gameStartDate) === 0,compareTime(gamestartTime) === 0)
+      } else {
+        setActive(false);
+        console.log(compareDates(gameStartDate) === 0,compareTime(gamestartTime) === 0)
+      }
+    } else {
+      setActive(false);
+      console.log(compareDates(gameStartDate) === 0,compareTime(gamestartTime) === 0,(new Date()).getTime())
+    }
+  }, [])
 
 
 
@@ -56,7 +58,7 @@ function GameDetailsPage() {
     const parsedGivenHours = parseInt(givenHours);
     const parsedGivenMinutes = parseInt(givenMinutes);
 
-    if (currentHours === parsedGivenHours && currentMinutes - parsedGivenMinutes >= 0 && currentMinutes - parsedGivenMinutes <= 15) {
+    if (currentHours === parsedGivenHours && currentMinutes - parsedGivenMinutes >= 0 && currentMinutes - parsedGivenMinutes <= 10) {
       return 0; // Times are equal
     } else if (currentHours > parsedGivenHours || (currentHours === parsedGivenHours && currentMinutes > parsedGivenMinutes)) {
       return 1; // Given time is in the past (before current time)
@@ -86,7 +88,7 @@ function GameDetailsPage() {
     }
 
     try {
-      navigate(`/game/${game.Id}`, { state: { team } });
+      navigate(`/game/${game.Id}`, { state: { team, time:gamestartTime,date:gameStartDate,gameName:game.GameName} });
       // Redirect the user to the game page or display a confirmation message
     } catch (error) {
       console.error('Failed to join the game:', error);
@@ -100,6 +102,7 @@ function GameDetailsPage() {
 
   const isDropdownEmpty = teamList.length === 0;
   const joinButtonDisabled = isDropdownEmpty || !active;
+
 
   return (
     <div className="mt-8 w-3/4 mx-auto bg-[#f9f9f9] px-6 py-7 rounded-xl ">

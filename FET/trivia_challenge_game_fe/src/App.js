@@ -27,6 +27,8 @@ import GameDetailsPage from './components/Lobby/GameDetailsPage';
 import Chat from './components/Game/Chat';
 import Chatbot from "./components/chatbot/Chatbot";
 import GamePage from "./components/Game/GamePage";
+import PostGame from "./components/Game/PostGame";
+import Temp from "./components/Temp";
 
 function App() {
   const [currentUser, setCurrentUser] = useState("");
@@ -75,10 +77,12 @@ function App() {
           <Route path='/lobby' element={<GameLobby />} />
           <Route path='/gameDetails' element={<GameDetailsPage />} />
           <Route path='/game/:id' element={<GamePage />} />
+          <Route path='/temp' element={<Temp />} />
           
 
           <Route path='/chat' element={<Chat />} />
-          <Route path='/chatbot' element={<Chatbot />} />              
+          <Route path='/chatbot' element={<Chatbot />} />             
+          <Route path="/postgame/:id" element={<PostGame />} /> 
           </Routes>
       </Router>
     </div>

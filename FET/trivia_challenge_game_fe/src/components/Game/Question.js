@@ -1,28 +1,39 @@
+import axios from "axios";
 import React, { useState, useEffect } from "react";
 
-const Question = ({ question,currentQuestionIndex,handleAnswer,isSubmitted}) => {
+const Question = ({ question,currentQuestionIndex,handleAnswer,id,team,date,gameName,timeLeft}) => {
 
 
-  const [timeLeft, setTimeLeft] = useState(20); // Set time for each question (in seconds)
   const [saveStatus,setSaveStatus]=useState("save");
   const [saveFlag,setSaveFlag]=useState(false);
 
-
-  const handlesave=()=>{
+const [selectedAnswer,setSelectedAnswer]=useState("");
+  const handlesave=async()=>{
     setSaveStatus("...saving");
-    setTimeout(()=>{setSaveStatus("saved");setSaveFlag(true);},1000);
+
+    try {
+      const payload={
+        "gameid": id,
+        "teamid": team,
+        "questionid": question.Id,
+        "category": question.Category,
+        "date": date,
+        "gamename": gameName,
+        "score": 0+(selectedAnswer==question.Answer)
+      }
+
+      const response = await axios.post('https://1wxmtoxiab.execute-api.us-east-1.amazonaws.com/dev/', payload);
+      
+      setSaveStatus("answer locked");
+      setSaveFlag(true)
+    } catch (error) {
+      console.log('Error:', error.message);
+    }
+
+
   };
 
-  
-  useEffect(() => {
-    const timer = setInterval(() => {
-      if (timeLeft > 0 ) {
-        setTimeLeft( timeLeft - 1);
-      }
-    }, 1000);
 
-    return () => clearInterval(timer);
-  }, [isSubmitted, timeLeft]);
 
   return (
     <div className="w-full md:w-[80%] mt-4">
@@ -45,7 +56,7 @@ const Question = ({ question,currentQuestionIndex,handleAnswer,isSubmitted}) => 
                 type="radio"
                 name={question.Id}
                 value={question.Option1}
-                onChange={() => handleAnswer(question.Id, question.Option1)}
+                onChange={() => {setSelectedAnswer(question.Option1);handleAnswer(question.Id, question.Option1);}}
                 disabled={saveFlag}
                 className="mr-2"
               />
@@ -58,7 +69,7 @@ const Question = ({ question,currentQuestionIndex,handleAnswer,isSubmitted}) => 
                 type="radio"
                 name={question.Id}
                 value={question.Option2}
-                onChange={() => handleAnswer(question.Id, question.Option2)}
+                onChange={() => {setSelectedAnswer(question.Option2);handleAnswer(question.Id, question.Option2);}}
                 disabled={saveFlag}
                 className="mr-2"
               />
@@ -71,7 +82,7 @@ const Question = ({ question,currentQuestionIndex,handleAnswer,isSubmitted}) => 
                 type="radio"
                 name={question.Id}
                 value={question.Option3}
-                onChange={() => handleAnswer(question.Id, question.Option3)}
+                onChange={() => {setSelectedAnswer(question.Option3);handleAnswer(question.Id, question.Option3);}}
                 disabled={saveFlag}
                 className="mr-2"
               />
@@ -84,7 +95,7 @@ const Question = ({ question,currentQuestionIndex,handleAnswer,isSubmitted}) => 
                 type="radio"
                 name={question.Id}
                 value={question.Option4}
-                onChange={() => handleAnswer(question.Id, question.Option4)}
+                onChange={() => {setSelectedAnswer(question.Option4);handleAnswer(question.Id, question.Option4);}}
                 disabled={saveFlag}
                 className="mr-2"
               />
