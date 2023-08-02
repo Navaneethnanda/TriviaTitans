@@ -8,23 +8,23 @@ import {
   Route,
   useNavigate,
 } from "react-router-dom";
-import bgImg from './Assets/bg-doodle.jpeg';
-import './App.css';
-import Login from './components/authentication/Login';
-import ProfilePage from './components/authentication/ProfilePage';
+import bgImg from "./Assets/bg-doodle.jpeg";
+import "./App.css";
+import Login from "./components/authentication/Login";
+import ProfilePage from "./components/authentication/ProfilePage";
 import { onAuthStateChanged } from "firebase/auth";
-import { auth } from './firebase';
-import SecurityQuestion from './components/authentication/SecurityQuestion';
-import AdminHome from './components/Admin/AdminHome';
-import GameCreation from './components/Admin/GameCreation';
-import QuestionCreation from './components/Admin/QuestionCreation';
-import Question from './components/Admin/Questions';
-import EditQuestion from './components/Admin/EditQuestion';
-import Categories from './components/Admin/Categories';
-import CreateCategory from './components/Admin/CreateCategory';
-import GameLobby from './components/Lobby/GameLobby';
-import GameDetailsPage from './components/Lobby/GameDetailsPage';
-import Chat from './components/Game/Chat';
+import { auth } from "./firebase";
+import SecurityQuestion from "./components/authentication/SecurityQuestion";
+import AdminHome from "./components/Admin/AdminHome";
+import GameCreation from "./components/Admin/GameCreation";
+import QuestionCreation from "./components/Admin/QuestionCreation";
+import Question from "./components/Admin/Questions";
+import EditQuestion from "./components/Admin/EditQuestion";
+import Categories from "./components/Admin/Categories";
+import CreateCategory from "./components/Admin/CreateCategory";
+import GameLobby from "./components/Lobby/GameLobby";
+import GameDetailsPage from "./components/Lobby/GameDetailsPage";
+import Chat from "./components/Game/Chat";
 import Chatbot from "./components/chatbot/Chatbot";
 import GamePage from "./components/Game/GamePage";
 import TeamOptions from "./components/Team/teamOptions";
@@ -33,6 +33,7 @@ import SelectTeam from "./components/Team/selectTeam";
 import ManageTeam from "./components/Team/manageTeam";
 import InviteMember from "./components/Team/inviteMember";
 import Invitation from "./components/Team/getInvitation";
+import GameDashBoard from "./components/Admin/GameDashboard";
 
 function App() {
   const [currentUser, setCurrentUser] = useState("");
@@ -73,7 +74,10 @@ function App() {
           <Route path="/team/select-team" element={<SelectTeam />} />
           <Route path="/team/manage/:teamname" element={<ManageTeam />} />
           <Route path="/team/:teamname/invite" element={<InviteMember />} />
-          <Route path="/invitation/:teamname/:inviter" element={<Invitation />} />
+          <Route
+            path="/invitation/:teamname/:inviter"
+            element={<Invitation />}
+          />
 
           {/*Admin Routes */}
           <Route path="/admin" element={<AdminHome />} />
@@ -84,14 +88,14 @@ function App() {
           <Route path="/categories" element={<Categories />} />
           <Route path="/createcategory" element={<CreateCategory />} />
 
-          <Route path='/lobby' element={<GameLobby />} />
-          <Route path='/gameDetails' element={<GameDetailsPage />} />
-          <Route path='/game/:id' element={<GamePage />} />
-          
+          <Route path="/lobby" element={<GameLobby />} />
+          <Route path="/gameDetails" element={<GameDetailsPage />} />
+          <Route path="/game/:id" element={<GamePage />} />
 
-          <Route path='/chat' element={<Chat />} />
-          <Route path='/chatbot' element={<Chatbot />} />              
-          </Routes>
+          <Route path="/chat" element={<Chat />} />
+          <Route path="/chatbot" element={<Chatbot />} />
+          <Route path="/gamedashboardadmin" element={<GameDashBoard />} />
+        </Routes>
       </Router>
     </div>
   );
