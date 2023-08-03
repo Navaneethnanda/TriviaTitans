@@ -109,7 +109,7 @@ const [selectedAnswer,setSelectedAnswer]=useState("");
           
           <button
             className="px-4 py-2 mt-4 bg-blue-500 hover:bg-blue-600 text-white rounded-lg"
-            onClick={handlesave}>
+            onClick={handlesave} disabled={saveFlag}>
             {saveStatus}
           </button>
        

@@ -8,8 +8,8 @@ import Leaderboard from "./LearderBoard";
 
 function GamePage() {
   // Time configuration for question and break time
-  const questiontime = 180; // Time for each question in seconds
-  const breaktime = 40; // Break time between questions in seconds
+  const questiontime = 30; // Time for each question in seconds
+  const breaktime = 30; // Break time between questions in seconds
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -21,12 +21,12 @@ function GamePage() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [chat, setChat] = useState(true);
   const team = location.state?.team;
-  const startDate=location.state?.date;
-  const startTime=location.state?.time;
-  const gameName=location.state?.gameName;
+  const startDate = location.state?.date;
+  const startTime = location.state?.time;
+  const gameName = location.state?.gameName;
   const [isBreakTime, setIsBreakTime] = useState(false);
   const [submitButton, setSubmitButton] = useState("submit");
-  const [dashboardList,setDashboardList]= useState([]);
+  const [dashboardList, setDashboardList] = useState([]);
 
   // Fetch data for the selected game ID from the API
   const fetchData = async () => {
@@ -37,43 +37,43 @@ function GamePage() {
       const allData = response.data.value;
       const filteredArray = allData.filter((item) => item.GameId === id);
       setAllQuestions(filteredArray);
-      console.log("the question count is ",filteredArray.length);
+      console.log("the question count is ", filteredArray.length);
 
-      const timeRequired = filteredArray.length*questiontime + (filteredArray.length-1)*breaktime;
-      const gameStart=new Date(startDate);
+      const timeRequired = filteredArray.length * questiontime + (filteredArray.length - 1) * breaktime;
+      const gameStart = new Date(startDate);
       gameStart.setHours(startTime.split(":")[0]);
       gameStart.setMinutes(startTime.split(":")[1]);
 
-      const timenow=new Date();
-      let seconds = Math.round((timenow.getTime() - gameStart.getTime() ) / 1000);
-      if(seconds>=timeRequired){
+      const timenow = new Date();
+      let seconds = Math.round((timenow.getTime() - gameStart.getTime()) / 1000);
+      if (seconds >= timeRequired) {
         alert(
           "!!!!   Quiz finshed go to dashboards !!!!!"
         );
         navigate("/lobby");
 
       }
-      else{
+      else {
 
-        if(Math.floor(seconds / (questiontime+breaktime))==filteredArray.length-1){
-          setCurrentQuestionIndex(filteredArray.length-1);
-          setTimeLeft(questiontime-(seconds % (questiontime+breaktime)));
+        if (Math.floor(seconds / (questiontime + breaktime)) == filteredArray.length - 1) {
+          setCurrentQuestionIndex(filteredArray.length - 1);
+          setTimeLeft(questiontime - (seconds % (questiontime + breaktime)));
           setIsSubmitted(true);
         }
-        else{
-const currentCycle=Math.floor(seconds / (questiontime+breaktime))
-if(seconds % (questiontime+breaktime)<questiontime){
-  setCurrentQuestionIndex(currentCycle);
-  setIsBreakTime(false); // Set break time to true
-        setTimeLeft(questiontime-(seconds % (questiontime+breaktime)));
+        else {
+          const currentCycle = Math.floor(seconds / (questiontime + breaktime))
+          if (seconds % (questiontime + breaktime) < questiontime) {
+            setCurrentQuestionIndex(currentCycle);
+            setIsBreakTime(false); // Set break time to true
+            setTimeLeft(questiontime - (seconds % (questiontime + breaktime)));
 
-}
-else{
-  setCurrentQuestionIndex(currentCycle);
-  setIsBreakTime(true); // Set break time to true
-  fetchDashboardData();
-  setTimeLeft((questiontime+breaktime)-(seconds%(questiontime+breaktime)));
-}
+          }
+          else {
+            setCurrentQuestionIndex(currentCycle);
+            setIsBreakTime(true); // Set break time to true
+            fetchDashboardData();
+            setTimeLeft((questiontime + breaktime) - (seconds % (questiontime + breaktime)));
+          }
 
         }
 
@@ -156,27 +156,27 @@ else{
     console.log("Selected Answers:", selectedAnswers);
     setSubmitButton("submitting");
     setSubmitButton("submitted");
-    console.log(allQuestions,selectedAnswers);
-    navigate("/postgame/"+id,{ state: { allQuestions,selectedAnswers} });
+    console.log(allQuestions, selectedAnswers);
+    navigate("/postgame/" + id, { state: { allQuestions, selectedAnswers } });
     // setTimeout(() => {
-     
+
     // }, 3000);
   };
 
 
-const fetchDashboardData=async()=>{
-  try {
-    const response = await axios.post(
-      "  https://1wxmtoxiab.execute-api.us-east-1.amazonaws.com/dev/dashboard"
-    ,{"gameid":id});
-console.log("dsfsdfsdfsdf",response.data.body);
-  setDashboardList(response.data.body);
+  const fetchDashboardData = async () => {
+    try {
+      const response = await axios.post(
+        "  https://1wxmtoxiab.execute-api.us-east-1.amazonaws.com/dev/dashboard"
+        , { "gameid": id });
+      console.log("dsfsdfsdfsdf", response.data.body);
+      setDashboardList(response.data.body);
 
+    }
+    catch (e) {
+      console.log(e);
+    }
   }
-  catch (e){
-console.log(e);
-  }
-}
 
 
 
@@ -212,7 +212,41 @@ console.log(e);
       ) : isBreakTime ? (
         <div className="mt-8 w-3/4 mx-auto bg-[#f9f9f9] px-6 py-7 rounded-xl ">
           Your next question will be up in {timeLeft} seconds.
-          <Leaderboard gamename={gameName} list={dashboardList}/>
+          <Leaderboard gamename={gameName} list={dashboardList} />
+
+
+
+
+          <div className="mb-6">
+            <h2 className="text-xl font-semibold mb-2">Question {currentQuestionIndex + 1}:</h2>
+            <p>{allQuestions[currentQuestionIndex].Question}</p>
+            <div className="mt-2">
+              {selectedAnswers[allQuestions[currentQuestionIndex].Id] ? (
+                <>
+                  <p className="font-semibold">Your Answer: {selectedAnswers[allQuestions[currentQuestionIndex].Id]}</p>
+                  <p className="font-semibold">Correct Answer: {allQuestions[currentQuestionIndex].Answer}</p>
+                  {selectedAnswers[allQuestions[currentQuestionIndex].Id] === allQuestions[currentQuestionIndex].Answer ? (
+                    <p className="text-green-600">You got it right!</p>
+                  ) : (
+                    <p className="text-red-600">You got it wrong!</p>
+                  )}
+                </>
+              ) : (
+                <p className="text-red-600">You didn't answer this question.</p>
+              )}
+            </div>
+          </div>
+
+
+
+
+
+
+
+
+
+
+
         </div>
       ) : (
         <Question
@@ -235,7 +269,7 @@ console.log(e);
         <button
           className="px-4 py-2 mt-4 bg-green-500 hover:bg-green-600 text-white rounded-lg cursor-pointer"
           onClick={handleSubmit}
-          
+
         >
           {submitButton}
         </button>

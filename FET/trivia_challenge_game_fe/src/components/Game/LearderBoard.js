@@ -10,7 +10,6 @@ const Leaderboard = ({ gamename, list }) => {
   const colors = ["#cd7f32", "#FFD700", "#c0c0c0"];
 const numbers=[3,1,2];
  
-console.log(positions)
 
 return (
     <div className="mt-8 w-full mx-auto bg-[#f9f9f9] px-6 py-7 rounded-xl flex justify-center">
