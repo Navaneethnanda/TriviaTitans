@@ -12,10 +12,7 @@ export default function AdminHome() {
         const response = await axios.get(
           "https://907fx2wvif.execute-api.us-east-1.amazonaws.com/Dev/games"
         );
-        console.log(response.data.value);
         setAllGames(response.data.value);
-        console.log("----------");
-        console.log(allgames);
         setData(allgames);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -26,8 +23,6 @@ export default function AdminHome() {
   }, []);
 
   const navigate = useNavigate();
-  console.log("-------------");
-
   const handleView = (item) => {
     const dataVal = {
       id: item.Id,
@@ -52,7 +47,6 @@ export default function AdminHome() {
                   Game
                 </Link>
               </div>
-              {/* <div className="font-bold text-3xl mb-4  mx-auto text-center" >Create  <Link to="/createquestion" className="text-blue-800 underline">Question</Link></div> */}
             </div>
           </div>
           <div className="flex items-center justify-center ">
@@ -62,7 +56,6 @@ export default function AdminHome() {
                   Category
                 </Link>
               </div>
-              {/* <div className="font-bold text-3xl mb-4  mx-auto text-center" >Create  <Link to="/createquestion" className="text-blue-800 underline">Question</Link></div> */}
             </div>
           </div>
           <div className="flex items-center justify-center ">
@@ -75,7 +68,6 @@ export default function AdminHome() {
                   GameDashBoard
                 </Link>
               </div>
-              {/* <div className="font-bold text-3xl mb-4  mx-auto text-center" >Create  <Link to="/createquestion" className="text-blue-800 underline">Question</Link></div> */}
             </div>
           </div>
           <div className="flex items-center justify-center ">
