@@ -34,6 +34,7 @@ import ManageTeam from "./components/Team/manageTeam";
 import InviteMember from "./components/Team/inviteMember";
 import Invitation from "./components/Team/getInvitation";
 import GameDashBoard from "./components/Admin/GameDashboard";
+import Leaders from "./components/leaders/Leaders";
 
 function App() {
   const [currentUser, setCurrentUser] = useState("");
@@ -93,6 +94,7 @@ function App() {
           <Route path="/game/:id" element={<GamePage />} />
 
           <Route path="/chat" element={<Chat />} />
+          <Route path="/leaders" element={<Leaders />} />
           <Route path="/chatbot" element={<Chatbot />} />
           <Route path="/gamedashboardadmin" element={<GameDashBoard />} />
         </Routes>

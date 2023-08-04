@@ -23,17 +23,23 @@ export default function ProfilePage() {
   const [gamesPlayed, setGamesPlayed] = useState("");
   const [totalWins, setTotalWins] = useState("");
   const [points, setPoints] = useState("");
+  const [userTeams, setUserTeams] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [chat,setChat]=useState(true);
+  const [chat, setChat] = useState(true);
 
+  const [otherTeamsScore, setOtherTeamsScore] = useState([]);
+  const otherTeamScoreArray = Object.entries(otherTeamsScore);
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
         setCurrentUserEmail(user.email);
 
         fetchActiveUserDetails(user.email);
-        localStorage.setItem("email",user.email);
-        localStorage.setItem("username",user.displayName);
+        fetchActiveUserTeams(user.email);
+        fetchOtherTeamsStats();
+        // fetchActiveUserStatistics(user.email);
+        localStorage.setItem("email", user.email);
+        localStorage.setItem("username", user.displayName);
       } else {
         navigate("/login");
       }
@@ -43,7 +49,7 @@ export default function ProfilePage() {
   const fetchActiveUserDetails = (email) => {
     axios
       .post(
-        "https://1on3r7usi4.execute-api.us-east-1.amazonaws.com/getUserDetails/getuserdetails",
+        "https://gfoir7vvx5.execute-api.us-east-1.amazonaws.com/getUserDetails/",
         { email }
       )
       .then((response) => {
@@ -58,12 +64,61 @@ export default function ProfilePage() {
         setProfilePictureUrl(userData.profilePictureUrl || "");
         setPhoneNumber(userData.phoneNumber || "");
         setAddress(userData.address || "");
-        setGamesPlayed(userData.gamesPlayed || 0);
-        setTotalWins(userData.totalWins || 0);
-        setPoints(userData.points || 0);
       })
       .catch((error) => {
         console.log("Error fetching user details:", error);
+      });
+  };
+
+  const fetchActiveUserTeams = (email) => {
+    axios
+      .post("https://s1hy3ogy5d.execute-api.us-east-1.amazonaws.com/prod", {
+        UserEmail: email,
+      })
+      .then((response) => {
+        //console.log("User details:", response.data);
+        const { Teams } = response.data;
+        setUserTeams(Teams);
+        console.log("User Teams:", userTeams);
+        console.log("**User teams:", response.data);
+        fetchActiveUserStatistics(email, Teams);
+      })
+      .catch((error) => {
+        console.log("Error fetching user Teams:", error);
+      });
+  };
+
+  const fetchActiveUserStatistics = (email, Teams) => {
+    axios
+      .post(
+        "https://s5mx3kd36f.execute-api.us-east-1.amazonaws.com/getStats/",
+        { teamIDs: Teams }
+      )
+      .then((response) => {
+        const userStats = JSON.parse(response.data.body);
+        console.log("User Stats:", userStats);
+        console.log("User TEAMS:", userTeams);
+        console.log("**User stats:", response.data);
+        setGamesPlayed(userStats.totalGamesPlayed || 0);
+
+        setPoints(userStats.totalScore || 0);
+      })
+      .catch((error) => {
+        console.log("Error fetching user Stats:", error);
+      });
+  };
+
+  const fetchOtherTeamsStats = () => {
+    axios
+      .post("https://gksiahwty7.execute-api.us-east-1.amazonaws.com/allStats/")
+      .then((response) => {
+        const OtherTeamStats = response.data.body;
+
+        console.log("**Other teams stats:", response.data.body);
+        setOtherTeamsScore(OtherTeamStats);
+      })
+      .catch((error) => {
+        console.log("Error fetching user Stats:", error);
       });
   };
 
@@ -142,9 +197,10 @@ export default function ProfilePage() {
   };
 
   const saveUserData = (userData) => {
+    console.log("zazza",userData);
     axios
       .post(
-        "https://1on3r7usi4.execute-api.us-east-1.amazonaws.com/updateUserDetails/updateuserdetails",
+        "https://3pqtqjne97.execute-api.us-east-1.amazonaws.com/updateUserDetails",
         userData
       )
       .then((response) => {
@@ -158,16 +214,21 @@ export default function ProfilePage() {
 
   return (
     <div className="flex items-center justify-center ">
-    <div className={"fixed bottom-4 right-4  p-3 text-xl rounded-lg transition-opacity duration-500 ease-in-out  md:w-[40vw] xl:w-[30vw] "+(chat?"opacity-0 hidden":"opacity-100 block") } >
-    <Chatbot chat={chat} setChat={setChat}/>
-    </div>
+      <div
+        className={
+          "fixed bottom-4 right-4  p-3 text-xl rounded-lg transition-opacity duration-500 ease-in-out  md:w-[40vw] xl:w-[30vw] " +
+          (chat ? "opacity-0 hidden" : "opacity-100 block")
+        }
+      >
+        <Chatbot chat={chat} setChat={setChat} />
+      </div>
       <div className="bg-white w-full sm:w-[640px] margin top mt-6 mb-16 p-8 rounded-md shadow-sm border-[1px]">
         <div className="flex items-center justify-between mb-4">
           <div className="font-bold text-3xl">Profile</div>
           <button
             className="bg-blue-500 text-white font-bold text-xl p-4 rounded-md"
             onClick={handleLogout}
-          > 
+          >
             Signout
           </button>
         </div>
@@ -198,24 +259,58 @@ export default function ProfilePage() {
               Edit
             </button>
           </div>
-          <div className="text-2xl mt-4">Email: {email}</div>
-          <div className="text-2xl mt-4">Name: {name}</div>
-          <div className="text-2xl mt-4">Phone: {phoneNumber}</div>
-          <div className="text-2xl mt-4">Address: {address}</div>
+          <div className="text-2xl mt-4">
+            <b>Email:</b> {email}
+          </div>
+          <div className="text-2xl mt-4">
+            <b>Name:</b> {name}
+          </div>
+          <div className="text-2xl mt-4">
+            <b>Phone:</b> {phoneNumber}
+          </div>
+          <div className="text-2xl mt-4">
+            <b>Address:</b> {address}
+          </div>
+          <div className="text-2xl mt-4">
+            <b>Teams:</b>{" "}
+            <ul>
+              {userTeams.map((userTeams, index) => (
+                <li key={index}>{userTeams},</li>
+              ))}
+            </ul>
+          </div>
         </div>
 
         <div className="bg-gray-100 p-4 mt-8">
           <p className="text-2xl text-center">Trivia Statistics</p>
           <div className="text-2xl mt-4">Total Games Played: {gamesPlayed}</div>
-          <div className="text-2xl mt-4">Total Wins: {totalWins}</div>
           <div className="text-2xl mt-4">Total Points: {points}</div>
         </div>
+
+        <div className="bg-gray-100 p-4 mt-8">
+          <p className="text-2xl text-center">Achievements Comparision </p>
+          <div className="text-2xl mt-4">
+            Other Teams Statistics:
+            <br />
+            <ul>
+              {otherTeamsScore.map(({ team, score }, index) => (
+                <li key={index}>
+                  <strong>
+                    {userTeams.includes(team) ? team : <span>{team}</span>}
+                  </strong>
+                  : {score}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
         <button
-        className="fixed bottom-4 left-4 bg-blue-500 text-white font-bold text-xl p-3 rounded-md"
-        onClick={() => navigate('/team')}
-      >
-        Go to Team
-      </button>
+          className="fixed bottom-4 left-4 bg-blue-500 text-white font-bold text-xl p-3 rounded-md"
+          onClick={() => navigate("/team")}
+        >
+          Go to Team
+        </button>
       </div>
 
       <Modal
@@ -309,10 +404,15 @@ export default function ProfilePage() {
       </Modal>
 
       <div
-        className={"fixed bottom-4 right-4 bg-[#C1292E] p-3 transition-opacity duration-500 ease-in-out text-white font-bold text-xl rounded-full cursor-pointer  "+(chat?"opacity-100 block":"opacity-0 hidden")}
-        onClick={()=>{setChat(!chat)}}>
-  <p>    Help and FAQ</p>
-        
+        className={
+          "fixed bottom-4 right-4 bg-[#C1292E] p-3 transition-opacity duration-500 ease-in-out text-white font-bold text-xl rounded-full cursor-pointer  " +
+          (chat ? "opacity-100 block" : "opacity-0 hidden")
+        }
+        onClick={() => {
+          setChat(!chat);
+        }}
+      >
+        <p> Help and FAQ</p>
       </div>
     </div>
   );

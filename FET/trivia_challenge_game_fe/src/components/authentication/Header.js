@@ -22,7 +22,10 @@ export default function Header() {
           <Link to="/lobby">
             <HomeIcon className="w-7 text-white" />
           </Link>
-          <MagnifyingGlassIcon className="w-7 text-white" />
+          <Link to="/leaders" className="w-9 text-white">
+            Leaders Board
+          </Link>
+
           <Link to="/profile">
             <UserCircleIcon className="w-9 text-white" />
           </Link>

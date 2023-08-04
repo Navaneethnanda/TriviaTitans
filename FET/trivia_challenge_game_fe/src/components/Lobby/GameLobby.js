@@ -6,19 +6,13 @@ function GameLobby() {
   const navigate = useNavigate();
   const [triviaGames, setTriviaGames] = useState([]);
   const [filteredGames, setFilteredGames] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedDifficulty, setSelectedDifficulty] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedDifficulty, setSelectedDifficulty] = useState("");
 
-
-
-
-const startgame=(id)=>{
-console.log(id);
-navigate("/game/"+id)
-
-};
-
-
+  const startgame = (id) => {
+    console.log(id);
+    navigate("/game/" + id);
+  };
 
   useEffect(() => {
     axios
@@ -37,8 +31,8 @@ navigate("/game/"+id)
 
     const filteredBySearchTerm = filteredByDifficulty.filter(
       (game) =>
-        (game.GameName && game.Category) && (game.GameName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        game.Category.toLowerCase().includes(searchTerm.toLowerCase()))
+        game.GameName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        game.Category.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     setFilteredGames(filteredBySearchTerm);
@@ -61,8 +55,7 @@ navigate("/game/"+id)
   };
 
   return (
-    <div className="container mx-auto pb-5">
-
+    <div className="container mx-auto">
       <div className="filters">
         <div className="filter-item mt-4">
           <label>
@@ -91,16 +84,15 @@ navigate("/game/"+id)
           </label>
         </div>
       </div>
-      <div className="games-container ">
-        {filteredGames.map(game => (
+      <div className="games-container">
+        {filteredGames.map((game) => (
           <div key={game.Id} className="game card">
             <div className="cardsBody">
-              <h2 className="text-3xl font-bold font-">{game.GameName}</h2>
-              <p><span className="font-bold text-lg ">Category: </span>{game.Category}</p>
-              <p><span className="font-bold text-lg ">Difficulty: </span>{game.Difficulty}</p>
-              <p><span className="font-bold text-lg ">Start Time: </span>{game.StartTime}</p>
-              <button className="game-details-button " onClick={() => handleJoinGame(game)}>Game Details</button>
-
+              <h2>{game.GameName}</h2>
+              <p>Category: {game.Category}</p>
+              <p>Difficulty: {game.Difficulty}</p>
+              <p>Start Time: {game.StartTime}</p>
+              <button onClick={() => handleJoinGame(game)}>Game Details</button>
             </div>
           </div>
         ))}
