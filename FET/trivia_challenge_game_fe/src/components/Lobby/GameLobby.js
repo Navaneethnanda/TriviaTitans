@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import {onAuthStateChanged } from "firebase/auth";
+import { auth } from "../../firebase";
 
 function GameLobby() {
   const navigate = useNavigate();
@@ -9,10 +11,33 @@ function GameLobby() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedDifficulty, setSelectedDifficulty] = useState("");
 
-  const startgame = (id) => {
-    console.log(id);
-    navigate("/game/" + id);
-  };
+
+
+
+
+
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        localStorage.setItem("email",user.email);
+        localStorage.setItem("username",user.displayName);
+      } else {
+        navigate("/login");
+      }
+    });
+  }, []);
+
+
+
+
+const startgame=(id)=>{
+console.log(id);
+navigate("/game/"+id)
+
+};
+
+
 
   useEffect(() => {
     axios
@@ -72,6 +97,8 @@ function GameLobby() {
             </select>
           </label>
         </div>
+
+        
         <div className="filter-item search-item mt-4 mb-4">
           <label>
             Search:

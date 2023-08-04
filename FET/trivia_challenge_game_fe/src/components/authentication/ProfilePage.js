@@ -7,6 +7,7 @@ import { auth } from "../../firebase";
 import Modal from "react-modal";
 import axios from "axios";
 import Chatbot from "../chatbot/Chatbot";
+import ppicture from '../../Assets/user.jpeg'
 
 export default function ProfilePage() {
   const [saved, setsaved] = useState(true);
@@ -37,9 +38,10 @@ export default function ProfilePage() {
         fetchActiveUserDetails(user.email);
         fetchActiveUserTeams(user.email);
         fetchOtherTeamsStats();
-        // fetchActiveUserStatistics(user.email);
-        localStorage.setItem("email", user.email);
-        localStorage.setItem("username", user.displayName);
+        localStorage.setItem("email",user.email);
+        localStorage.setItem("username",user.displayName);
+        setName(user.displayName || "");
+        setEmail(user.email || "");
       } else {
         navigate("/login");
       }
@@ -58,8 +60,8 @@ export default function ProfilePage() {
         console.log("User details:", userData);
         console.log("**User details:", response.data);
         setCurrentUser(userData);
-        setEmail(userData?.email || "");
-        setName(userData.name || "");
+        // setEmail(userData?.email || "");
+        // setName(userData.name || "");
         setProfilePicture(userData.profilePicture || "");
         setProfilePictureUrl(userData.profilePictureUrl || "");
         setPhoneNumber(userData.phoneNumber || "");
@@ -126,6 +128,8 @@ export default function ProfilePage() {
     signOut(auth)
       .then(() => {
         console.log("logged out");
+        
+        localStorage.clear()
         navigate("/login");
       })
       .catch((error) => {
@@ -235,16 +239,16 @@ export default function ProfilePage() {
 
         <div>
           <img
-            className="mx-auto rounded-full h-52 w-52 object-cover"
-            src={currentUser.profilePicture} // Update this line
+            className="mx-auto rounded-full h-52 w-52 object-cover border border-black shadow-sm"
+            src={ppicture} // Update this line
             onClick={() => setLiked(!liked)}
             alt="profile pic"
           />
-          <HeartIcon
+{        /* <HeartIcon
             className="w-7 relative mx-auto bottom-8"
             style={{ color: liked ? "#ffadad" : "red" }}
             onClick={() => setLiked(!liked)}
-          />
+  />*/}
         </div>
 
         <div className="mt-8">

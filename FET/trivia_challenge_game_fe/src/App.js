@@ -36,6 +36,7 @@ import Invitation from "./components/Team/getInvitation";
 import GameDashBoard from "./components/Admin/GameDashboard";
 import Leaders from "./components/leaders/Leaders";
 
+import PostGame from "./components/Game/PostGame";
 function App() {
   const [currentUser, setCurrentUser] = useState("");
 
@@ -97,6 +98,8 @@ function App() {
           <Route path="/leaders" element={<Leaders />} />
           <Route path="/chatbot" element={<Chatbot />} />
           <Route path="/gamedashboardadmin" element={<GameDashBoard />} />
+              
+          <Route path="/postgame/:id" element={<PostGame />} /> 
         </Routes>
       </Router>
     </div>

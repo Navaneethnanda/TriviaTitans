@@ -1,7 +1,8 @@
+import React, { useState } from 'react';
 
 
-export default function Temp(props){
+const Temp = () => {
+  return (<div></div>);
+};
 
-
-  return <h1>dfdfd</h1>;
-}
+export default Temp;

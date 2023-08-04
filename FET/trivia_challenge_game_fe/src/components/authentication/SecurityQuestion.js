@@ -13,6 +13,7 @@ export default function SecurityQuestion() {
     const [question,setQuestion]=useState("");
     const [answer,setAnswer]=useState("");
     const [usersAnswer,setUsersAnswer] = useState("");
+    const [type,setType]=useState("user");
 
     const location = useLocation();
     const data = location.state;
@@ -39,9 +40,10 @@ else{
               });
               setQuestion(response.data.Question);
               setAnswer(response.data.answer);
+              setType(response.data.role);
               console.log(response);
               console.log(response.data.answer,"f");
-
+              localStorage.setItem("type",response.data.role);
 
             } catch (error) {
               console.log('Error fetching data:', error);
@@ -58,7 +60,10 @@ else{
                 signInWithEmailAndPassword(auth, username, password)
                 .then((userCredential) => {
                   const user = userCredential.user;
-                  navigate('/profile');
+
+
+                  navigate('/lobby');
+
                 })
                 .catch((error) => {
                   console.log("login error");
