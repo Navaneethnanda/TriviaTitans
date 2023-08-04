@@ -1,16 +1,14 @@
 import { useState, useEffect } from "react";
-import { useNavigate, Link, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 
-import 'react-datepicker/dist/react-datepicker.css';
+import "react-datepicker/dist/react-datepicker.css";
 
 export default function QuestionCreation() {
   const navigate = useNavigate();
   const location = useLocation();
   const gameId = location.state;
-  console.log("---------------");
-  console.log(gameId);
   const [questionname, setQuestionName] = useState();
   const [option1, setoption1] = useState();
   const [option2, setoption2] = useState();
@@ -23,85 +21,85 @@ export default function QuestionCreation() {
   const [questiondifficultylevel, setQuestionDifficultyLevel] = useState();
   const [categories, setCategories] = useState([]);
 
-
-
-  const difficultylevel = [
-    "Easy",
-    "Medium",
-    "Hard"
-  ];
+  const difficultylevel = ["Easy", "Medium", "Hard"];
 
   const handleCategoryChange = (e) => {
     const selectedCategory = e.target.value;
-    console.log(selectedCategory);
     setQuestionCategory(selectedCategory);
   };
 
-
   const handleDifficultyLevelChange = (e) => {
     const selectedDifficulty = e.target.value;
-    console.log(selectedDifficulty);
     setQuestionDifficultyLevel(selectedDifficulty);
   };
 
-  useEffect(()=>{
-  const fetchData = async () => {
-    try {
-        const response = await axios.get('https://907fx2wvif.execute-api.us-east-1.amazonaws.com/Dev/categories');
-        console.log(response.data.value);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          "https://907fx2wvif.execute-api.us-east-1.amazonaws.com/Dev/categories"
+        );
         setCategories(response.data.value);
-    } catch (error) {
-        console.error('Error fetching data:', error);
-    }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
     };
 
-  fetchData();
- },[]);
+    fetchData();
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    console.log("-------------------------------")
-    console.log(questionname);
-    console.log(option1);
-    console.log(option2);
-    console.log(option3);
-    console.log(option4);
-    console.log(answer);
-    console.log(hint);
-    console.log(explanation); // Logging explanation value
-    console.log(questioncategory);
-    console.log(questiondifficultylevel);
-  
     const randomId = uuidv4();
 
-    const data={
-      "Id": randomId,
-      "Question": questionname,
-      "Option1": option1,
-      "Option2": option2,
-      "Option3": option3,
-      "Option4": option4,
-      "Answer": answer,
-      "Hint": hint,
-      "Explanation": explanation, // Adding the explanation to the data object
-      "Category": questioncategory,
-      "Difficulty": questiondifficultylevel,
-      "GameId": gameId
-      }
+    const dataVal = {
+      question:
+        questionname +
+        " " +
+        questionname +
+        " " +
+        questionname +
+        " " +
+        questionname +
+        " " +
+        questionname,
+    };
+    const tagresponse = await axios.post(
+      "https://us-central1-serverless-question-tagging.cloudfunctions.net/question-tag",
+      dataVal
+    );
+    const tags = tagresponse?.data[0]?.split("/")?.join(",")?.substring(1);
 
-      const requestPayload = {
-        method: 'POST',
-        body: JSON.stringify(data) // Convert the data object to a JSON string
-      };
+    const data = {
+      Id: randomId,
+      Question: questionname,
+      Option1: option1,
+      Option2: option2,
+      Option3: option3,
+      Option4: option4,
+      Answer: answer,
+      Hint: hint,
+      Category: questioncategory,
+      Difficulty: questiondifficultylevel,
+      GameId: gameId,
+      AutomatedTag: tags,
+    };
 
-      try {
-      const response = await axios.post('https://907fx2wvif.execute-api.us-east-1.amazonaws.com/Dev/questions',requestPayload);
-      console.log(response.data.value);
-      }catch (error) {
-        console.log('Error fetching data:', error);
-      }
-      navigate("/admin");
+    const requestPayload = {
+      method: "POST",
+      body: JSON.stringify(data), // Convert the data object to a JSON string
+    };
+
+    try {
+      await axios.post(
+        "https://907fx2wvif.execute-api.us-east-1.amazonaws.com/Dev/questions",
+        requestPayload
+      );
+    } catch (error) {
+      console.log("Error fetching data:", error);
+    }
+    navigate("/admin");
   };
 
   // Function to toggle the explanation visibility
@@ -182,10 +180,12 @@ export default function QuestionCreation() {
                         {option.Category}
                       </option>
                     ))}
-                  </select>     
+                  </select>
                 </div>
                 <div className="w-full inline-grid grid-cols-1">
-                  <span className="mb-2">Difficulty Level <span className="text-red-600">*</span></span>
+                  <span className="mb-2">
+                    Difficulty Level <span className="text-red-600">*</span>
+                  </span>
                   <select
                     id="questiondifficultylevel"
                     value={questiondifficultylevel}
