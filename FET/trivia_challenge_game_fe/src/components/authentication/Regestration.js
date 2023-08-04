@@ -9,12 +9,12 @@ import axios from "axios";
 export default function Regestration() {
 
 
-  const [question1, setQuestion1] = useState("What is your favorite color?");
-  const [answer1, setAnswer1] = useState("red");
-  const [question2, setQuestion2] = useState("What is your favorite movie?");
-  const [answer2, setAnswer2] = useState("bb");
-  const [question3, setQuestion3] = useState("What city were you born in?");
-  const [answer3, setAnswer3] = useState("cc");
+  const [question1, setQuestion1] = useState("");
+  const [answer1, setAnswer1] = useState("");
+  const [question2, setQuestion2] = useState("");
+  const [answer2, setAnswer2] = useState("");
+  const [question3, setQuestion3] = useState("");
+  const [answer3, setAnswer3] = useState("");
 
   const questionOptions = [
     "What is your favorite color?",
@@ -57,7 +57,7 @@ export default function Regestration() {
         "securityQuestion3": question3,
         "answer1": answer1,
         "answer2": answer2,
-        "answer3": answer3
+        "answer3": answer3,
       }
       const response = await axios.post('https://r66ypo4nf8.execute-api.us-east-1.amazonaws.com/test/setsq', data);
       console.log(response);
@@ -71,11 +71,11 @@ export default function Regestration() {
 
 
 
-  const [firstName, setFirstName] = useState('navaneeth');
-  const [lastName, setLastName] = useState('nanda');
-  const [email, setEmail] = useState('nanda@gmail.com');
-  const [password, setPassword] = useState('Nanda@123');
-  const [confirmPassword, setConfirmPassword] = useState('Nanda@123');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [phoneNumber, setPhoneNumber] = useState("");
   const [address, setAddress] = useState("");
   const [profilePicture, setProfilePicture] = useState(""); // File or URL
@@ -190,7 +190,7 @@ export default function Regestration() {
 
       saveUserData(userData);
 
-      navigate('/profile');
+      navigate('/login');
 
     });
 
@@ -335,8 +335,8 @@ export default function Regestration() {
 
 
           <div className="flex   items-center mt-8">
-            <div className="bg-[#C1292E] p-3 text-white font-bold text-xl max-w-fit rounded-md ">
-              <input type="submit" value="Register" onClick={handleSubmit} />
+            <div className="bg-[#C1292E] p-3 text-white font-bold text-xl max-w-fit rounded-md  cursor-pointer">
+              <input type="submit" value="Register" onClick={handleSubmit}  />
 
             </div>
             <Link to="/Login" className="text-blue-800 underline ml-auto">already a user? Login</Link>

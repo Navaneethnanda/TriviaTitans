@@ -8,8 +8,8 @@ import Leaderboard from "./LearderBoard";
 
 function GamePage() {
   // Time configuration for question and break time
-  const questiontime = 30; // Time for each question in seconds
-  const breaktime = 30; // Break time between questions in seconds
+  const questiontime = 2000; // Time for each question in seconds
+  const breaktime = 10; // Break time between questions in seconds
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -157,7 +157,7 @@ function GamePage() {
     setSubmitButton("submitting");
     setSubmitButton("submitted");
     console.log(allQuestions, selectedAnswers);
-    navigate("/postgame/" + id, { state: { allQuestions, selectedAnswers } });
+    navigate("/postgame/" + id, { state: { allQuestions, selectedAnswers,team } });
     // setTimeout(() => {
 
     // }, 3000);
@@ -221,8 +221,8 @@ function GamePage() {
             <h2 className="text-xl font-semibold mb-2">Question {currentQuestionIndex + 1}:</h2>
             <p>{allQuestions[currentQuestionIndex].Question}</p>
             <div className="mt-2">
-              {selectedAnswers[allQuestions[currentQuestionIndex].Id] ? (
-                <>
+              {selectedAnswers[allQuestions[currentQuestionIndex].Id]?(
+                <div>
                   <p className="font-semibold">Your Answer: {selectedAnswers[allQuestions[currentQuestionIndex].Id]}</p>
                   <p className="font-semibold">Correct Answer: {allQuestions[currentQuestionIndex].Answer}</p>
                   {selectedAnswers[allQuestions[currentQuestionIndex].Id] === allQuestions[currentQuestionIndex].Answer ? (
@@ -230,10 +230,12 @@ function GamePage() {
                   ) : (
                     <p className="text-red-600">You got it wrong!</p>
                   )}
-                </>
+                  
+                </div>
               ) : (
                 <p className="text-red-600">You didn't answer this question.</p>
               )}
+              <p><span className="font-semibold text-lg"> Explanation : </span>{allQuestions[currentQuestionIndex].Explanation}</p>
             </div>
           </div>
 

@@ -18,8 +18,8 @@ export default function Login() {
   const provider = new GoogleAuthProvider();
   const fprovider = new FacebookAuthProvider();
 
-  const [username, setUsername] = useState("nanda@gmail.com");
-  const [password, setPassword] = useState("Nanda@123");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
@@ -63,9 +63,7 @@ export default function Login() {
         // The signed-in user info.
         const user = result.user;
 
-        // This gives you a Facebook Access Token. You can use it to access the Facebook API.
-        const credential = FacebookAuthProvider.credentialFromResult(result);
-        const accessToken = credential.accessToken;
+        navigate("/profile");
 
         // IdP data available using getAdditionalUserInfo(result)
         // ...

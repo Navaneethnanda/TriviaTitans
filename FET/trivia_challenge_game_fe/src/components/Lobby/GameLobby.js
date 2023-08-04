@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import {onAuthStateChanged } from "firebase/auth";
+import { auth } from "../../firebase";
 
 function GameLobby() {
   const navigate = useNavigate();
@@ -8,6 +10,23 @@ function GameLobby() {
   const [filteredGames, setFilteredGames] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedDifficulty, setSelectedDifficulty] = useState('');
+
+
+
+
+
+
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        localStorage.setItem("email",user.email);
+        localStorage.setItem("username",user.displayName);
+      } else {
+        navigate("/login");
+      }
+    });
+  }, []);
 
 
 

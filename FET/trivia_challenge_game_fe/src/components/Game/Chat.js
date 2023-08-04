@@ -79,7 +79,7 @@ const Chat = ({chat, setChat,id}) => {
   };
 
   useEffect(()=>{
-    const username = localStorage.getItem('user');
+    const username = localStorage.getItem('username');
     setUser(username?username:"");
   },[]);
 
