@@ -33,8 +33,10 @@ import InviteMember from "./components/Team/inviteMember";
 import Invitation from "./components/Team/getInvitation";
 import GameDashBoard from "./components/Admin/GameDashboard";
 import Leaders from "./components/leaders/Leaders";
+import Temp from "./components/Temp";
 
 import PostGame from "./components/Game/PostGame";
+import { TempleBuddhist } from "@mui/icons-material";
 function App() {
  
 
@@ -88,6 +90,8 @@ function App() {
           <Route path="/gamedashboardadmin" element={<GameDashBoard />} />
               
           <Route path="/postgame/:id" element={<PostGame />} /> 
+          <Route path="/temp" element={<Temp />} /> 
+
         </Routes>
       </Router>
     </div>

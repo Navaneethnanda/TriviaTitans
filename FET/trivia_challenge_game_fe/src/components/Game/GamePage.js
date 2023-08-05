@@ -8,7 +8,7 @@ import Leaderboard from "./LearderBoard";
 
 function GamePage() {
   // Time configuration for question and break time
-  const questiontime = 2000; // Time for each question in seconds
+  const questiontime = 20; // Time for each question in seconds
   const breaktime = 10; // Break time between questions in seconds
 
   const navigate = useNavigate();

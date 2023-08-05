@@ -17,7 +17,6 @@ export default function Login() {
   const navigate = useNavigate();
   const provider = new GoogleAuthProvider();
   const fprovider = new FacebookAuthProvider();
-
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 

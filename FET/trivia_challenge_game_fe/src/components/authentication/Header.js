@@ -34,6 +34,7 @@ const type=localStorage.getItem("type");
           <Link to="/lobby">
             <HomeIcon className="w-7 text-white" />
           </Link>
+
           <Link to="/leaders" className="w-9 text-white">
             <TrophyIcon className="w-7 text-white"/>
           </Link>
@@ -41,6 +42,7 @@ const type=localStorage.getItem("type");
           <Link to="/profile">
             <UserCircleIcon className="w-9 text-white" />
           </Link>
+          
         </div>
         <Bars3Icon className="w-7 text-white sm:hidden" />
       </div>
