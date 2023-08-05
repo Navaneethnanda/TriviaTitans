@@ -119,7 +119,7 @@ navigate("/game/"+id)
               <p>Category: {game.Category}</p>
               <p>Difficulty: {game.Difficulty}</p>
               <p>Start Time: {game.StartTime}</p>
-              <button onClick={() => handleJoinGame(game)}>Game Details</button>
+              <button  className="bg-[#008b8b] text-white p-4 rounded-md" onClick={() => handleJoinGame(game)}>Game Details</button>
             </div>
           </div>
         ))}

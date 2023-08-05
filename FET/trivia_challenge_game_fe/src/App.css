@@ -122,7 +122,7 @@ li {
 }
 
 .game button:hover {
-  background-color: darkcyan;
+  background-color: #008b8b;
 }
 
 /* Additional styles for GameDetailsPage */

@@ -2,7 +2,7 @@ import {
   HomeIcon,
   MagnifyingGlassIcon,
   UserCircleIcon,
-  Bars3Icon,BuildingLibraryIcon
+  Bars3Icon,BuildingLibraryIcon,TrophyIcon
 } from "@heroicons/react/24/solid";
 
 
@@ -35,7 +35,7 @@ const type=localStorage.getItem("type");
             <HomeIcon className="w-7 text-white" />
           </Link>
           <Link to="/leaders" className="w-9 text-white">
-            Leaders Board
+            <TrophyIcon className="w-7 text-white"/>
           </Link>
 
           <Link to="/profile">

@@ -34,7 +34,7 @@ function GameDetailsPage() {
   }, [])
 
 
-
+ 
 
   function compareDates(date1) {
     const date1Object = new Date(date1);
