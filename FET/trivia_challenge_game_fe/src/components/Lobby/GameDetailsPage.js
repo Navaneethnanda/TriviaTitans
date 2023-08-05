@@ -35,7 +35,7 @@ function GameDetailsPage() {
 
 
 
-
+// Helper function to compare dates
   function compareDates(date1) {
     const date1Object = new Date(date1);
     const date2Object = new Date();
@@ -73,6 +73,8 @@ function GameDetailsPage() {
       "UserEmail": userEmail
     }
     // Simulating API call to fetch teamList (uncomment the actual API call if needed)
+    // Reference: https://docs.aws.amazon.com/apigateway/latest/developerguide/welcome.html
+    
     axios.post('https://s1hy3ogy5d.execute-api.us-east-1.amazonaws.com/prod', getTeamsData)
       .then(response => {
         console.log(response.data.Teams)

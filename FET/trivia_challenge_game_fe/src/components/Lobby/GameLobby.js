@@ -12,7 +12,7 @@ function GameLobby() {
   const [selectedDifficulty, setSelectedDifficulty] = useState("");
 
 
-
+ // Check if the user is authenticated with Firebase
 
 
 
@@ -37,10 +37,11 @@ navigate("/game/"+id)
 
 };
 
-
+// Fetch trivia games from the API Gateway
 
   useEffect(() => {
     axios
+    // Reference: https://docs.aws.amazon.com/apigateway/latest/developerguide/welcome.html
       .get("https://907fx2wvif.execute-api.us-east-1.amazonaws.com/Dev/games")
       .then((response) => {
         setTriviaGames(response.data.value);
@@ -49,6 +50,7 @@ navigate("/game/"+id)
       .catch((error) => console.log(error));
   }, []);
 
+// Filter games based on selected difficulty and search term
   useEffect(() => {
     const filteredByDifficulty = selectedDifficulty
       ? triviaGames.filter((game) => game.Difficulty === selectedDifficulty)
@@ -63,6 +65,7 @@ navigate("/game/"+id)
     setFilteredGames(filteredBySearchTerm);
   }, [selectedDifficulty, searchTerm, triviaGames]);
 
+// Handle user input for the search bar
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
   };
@@ -70,12 +73,12 @@ navigate("/game/"+id)
   const handleFilterDifficulty = (event) => {
     setSelectedDifficulty(event.target.value);
   };
-
+ // Handle user click to join a game and redirect to the game details page
   const handleJoinGame = (game) => {
     console.log("User joined the game:", game);
     navigate("/gameDetails", { state: { game } });
 
-    // Add your logic to handle the user joining the game
+    
     // Redirect the user to the game page or display a confirmation message
   };
 
