@@ -12,8 +12,6 @@ import bgImg from "./Assets/bg-doodle.jpeg";
 import "./App.css";
 import Login from "./components/authentication/Login";
 import ProfilePage from "./components/authentication/ProfilePage";
-import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "./firebase";
 import SecurityQuestion from "./components/authentication/SecurityQuestion";
 import AdminHome from "./components/Admin/AdminHome";
 import GameCreation from "./components/Admin/GameCreation";
@@ -38,17 +36,7 @@ import Leaders from "./components/leaders/Leaders";
 
 import PostGame from "./components/Game/PostGame";
 function App() {
-  const [currentUser, setCurrentUser] = useState("");
-
-  useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setCurrentUser(user.displayName);
-      } else {
-        setCurrentUser("");
-      }
-    });
-  }, []);
+ 
 
   return (
     <div

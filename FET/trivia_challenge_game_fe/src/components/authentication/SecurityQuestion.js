@@ -55,8 +55,10 @@ else{
 
 
       const login=()=>{
+        console.log("sdfsddsf");
         if(usersAnswer==answer){
             
+          console.log(123);
                 signInWithEmailAndPassword(auth, username, password)
                 .then((userCredential) => {
                   const user = userCredential.user;
@@ -73,6 +75,7 @@ else{
           
         }
         else{
+          console.log(12);
             navigate("/login");
         }
 
