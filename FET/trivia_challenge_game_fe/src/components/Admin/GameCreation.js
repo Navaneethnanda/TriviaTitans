@@ -103,6 +103,15 @@ export default function GameCreation() {
       console.log("Error fetching data:", error);
     }
 
+    try{ 
+      const newGameAlertData = {
+        "GameName": gamename
+      }
+      const response = await axios.post("https://nliq5hix4m.execute-api.us-east-1.amazonaws.com/prod", newGameAlertData);
+    } catch (error) {
+      console.error("Error sending new game alert", error);
+    }
+
     navigate("/admin");
   };
 
