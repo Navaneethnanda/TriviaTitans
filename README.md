@@ -1,6 +1,6 @@
 # 1. Architecture (Of whole Application)
 
-![Alt text](relative%20path/to/architecture.png?raw=true "Title")
+![Alt text](./architecture.png?raw=true "Title")
 
 
 # 2. Feature Specification: -
